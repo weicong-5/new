@@ -71,6 +71,7 @@ $config = [
         ],
 
     ],
+    //yii2-user 组件配置
     'modules' => [
         'user' => [
             'class' => 'dektrium\user\Module',

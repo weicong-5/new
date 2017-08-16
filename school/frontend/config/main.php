@@ -11,37 +11,39 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
-    /*'modules' => [
+    'modules' => [
         'user' => [
             // following line will restrict access to admin controller from frontend application
+            //从前端限制对admin控制器的访问
             'as frontend' => 'dektrium\user\filters\FrontendFilter',
         ],
-    ],*/
+    ],
     'components' => [
         //原有注释
+//        'user' => [
+//            'identityClass' => 'common\models\User',
+//            'enableAutoLogin' => true,
+//            //把下面的配置 包含进来
+//            'identityCookie' => [
+//                'name' => '_frontendIdentity',
+//                'httpOnly' => true,
+//            ],
+//        ],
+        //设置在一个域中独立对话
         'user' => [
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            //把下面的配置 包含进来
             'identityCookie' => [
-                'name' => '_frontendIdentity',
+                'name'     => '_frontendIdentity',
+                'path'     => '/',
                 'httpOnly' => true,
             ],
         ],
-//        'user' => [
-//            'identityCookie' => [
-//                'name'     => '_frontendIdentity',
-//                'path'     => '/',
-//                'httpOnly' => true,
-//            ],
-//        ],
-//        'session' => [
-//            'name' => 'FRONTENDSESSID',
-//            'cookieParams' => [
-//                'httpOnly' => true,
-//                'path'     => '/',
-//            ],
-//        ],
+        'session' => [
+            'name' => 'FRONTENDSESSID',
+            'cookieParams' => [
+                'httpOnly' => true,
+                'path'     => '/',
+            ],
+        ],
         //定义session 名字
         'session' => [
             'name' => 'school-frontend',

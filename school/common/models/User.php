@@ -1,211 +1,169 @@
 <?php
+
 namespace common\models;
 
 use Yii;
-use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
-use yii\behaviors\AttributeBehavior;
-use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\base\NotSupportedException;
 
 /**
- * User model
+ * This is the model class for table "user".
  *
  * @property integer $id
  * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
  * @property string $email
+ * @property string $password_hash
  * @property string $auth_key
- * @property string $oauth_client
- * @property string $oauth_client_user_id
- * @property integer $status
+ * @property integer $confirmed_at
+ * @property string $unconfirmed_email
+ * @property integer $blocked_at
+ * @property string $registration_ip
  * @property integer $created_at
  * @property integer $updated_at
- * @property string $password write-only password
+ * @property integer $last_login_at
+ * @property integer $status
+ * @property integer $is_manager
  *
- * @property \common\models\UserProfile $userProfile
+ * @property Profile $profile
+ * @property SocialAccount[] $socialAccounts
+ * @property Token[] $tokens
  */
-//class User extends ActiveRecord implements IdentityInterface
-class User extends \mdm\admin\models\User
+class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
+    const STATUS_DELETED = 0; //账号被注销
+    const STATUS_ACTIVE = 1;
+
+    const IS_USER = 0;
 
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
+//        return 'user';
         return '{{%user}}';
     }
 
     /**
      * @inheritdoc
      */
+
     public function behaviors()
     {
-        return [
-            TimestampBehavior::className(),//自动填充created_at  update_at字段， 在插入数据时自动更新
-        ];
+       return [
+         TimestampBehavior::className(),
+       ];
+    }
 
-            //如果加了access_token  yii2-admin中的user表没有该字段
-//            'access_token' => [
-//                'class' => AttributeBehavior::className(),
-//                'attributes' => [
-//                    ActiveRecord::EVENT_BEFORE_INSERT => 'access_token'
-//                ],
-//                'value' => Yii::$app->getSecurity()->generateRandomString(40)
-//            ]
+    public function rules()
+    {
+        return [
+            [['confirmed_at', 'blocked_at', 'created_at', 'updated_at', 'last_login_at', 'status','is_manager'], 'integer'],
+            [['username', 'email', 'unconfirmed_email'], 'string', 'max' => 255],
+            [['password_hash'], 'string', 'max' => 60],
+            [['auth_key'], 'string', 'max' => 32],
+            [['registration_ip'], 'string', 'max' => 45],
+            [['username'], 'unique'],
+            [['email'], 'unique'],
+        ];
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function attributeLabels()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            'id' => 'ID',
+            'username' => 'Username',
+            'email' => 'Email',
+            'password_hash' => 'Password Hash',
+            'auth_key' => 'Auth Key',
+            'confirmed_at' => 'Confirmed At',
+            'unconfirmed_email' => 'Unconfirmed Email',
+            'blocked_at' => 'Blocked At',
+            'registration_ip' => 'Registration Ip',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'last_login_at' => 'Last Login At',
+            'status' => 'Status',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserProfile()
+    public function getProfile()
     {
-        return $this->hasOne(UserProfile::className(), ['user_id'=>'id']);
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
 
     /**
-     * @inheritdoc
+     * @return \yii\db\ActiveQuery
      */
+    public function getSocialAccounts()
+    {
+        return $this->hasMany(SocialAccount::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTokens()
+    {
+        return $this->hasMany(Token::className(), ['user_id' => 'id']);
+    }
+
+    //IdentityInterface 接口 必须重写的方法如下
+    //根据id查找user
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => $id,'status' => self::STATUS_ACTIVE,'is_manager' => self::IS_USER]);
     }
 
-    /**
-     * @inheritdoc
-     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        throw new NotSupportedException('findIdentityByAccessToken is not implemented');
     }
 
     /**
      * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
+     * @param $username
+     * @return static
      */
-    public static function findByUsername($username)
-    {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+    public static function findByUserName($username){
+        return static::findOne(['username' => $username,'status' => self::STATUS_ACTIVE,'is_manager' => self::IS_USER]);
     }
 
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return static|null
-     */
-    public static function findByPasswordResetToken($token)
-    {
-        if (!static::isPasswordResetTokenValid($token)) {
-            return null;
-        }
-
-        return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
-        ]);
-    }
-
-    /**
-     * Finds out if password reset token is valid
-     *
-     * @param string $token password reset token
-     * @return boolean
-     */
-    public static function isPasswordResetTokenValid($token)
-    {
-        if (empty($token)) {
-            return false;
-        }
-
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-        return $timestamp + $expire >= time();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getId()
-    {
+    public function getId(){
         return $this->getPrimaryKey();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAuthKey()
     {
         return $this->auth_key;
     }
 
-    /**
-     * @inheritdoc
-     */
+    //验证自动登录KEY
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
     }
 
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return boolean if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    //验证密码
+    public function validatePassword($password){
+        return Yii::$app->security->validatePassword($password,$this->password_hash);
     }
 
-    /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
+    //设置密码
+    public function setPassword($password){
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
-
-    /**
-     * Generates "remember me" authentication key
-     */
-    public function generateAuthKey()
-    {
+    //设置自动登录KEY
+    public function generateAuthKey(){
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
-    /**
-     * Generates new password reset token
-     */
-    public function generatePasswordResetToken()
-    {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
-    }
 
-    /**
-     * Removes password reset token
-     */
-    public function removePasswordResetToken()
-    {
-        $this->password_reset_token = null;
-    }
 }
