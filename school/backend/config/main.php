@@ -24,6 +24,10 @@ $config = [
         'school' => [
             'class' => 'backend\modules\school\school',
         ],
+        //新增的
+        'role' => [
+            'class' => 'backend\modules\roles\role'
+        ]
     ],
     'components' => [
         /*'user' => [

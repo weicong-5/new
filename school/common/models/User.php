@@ -75,17 +75,17 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'username' => 'Username',
-            'email' => 'Email',
+            'id' => '编号',
+            'username' => '用户名',
+            'email' => '邮箱',
             'password_hash' => 'Password Hash',
             'auth_key' => 'Auth Key',
             'confirmed_at' => 'Confirmed At',
             'unconfirmed_email' => 'Unconfirmed Email',
             'blocked_at' => 'Blocked At',
             'registration_ip' => 'Registration Ip',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'created_at' => '生成时间',
+            'updated_at' => '更新时间',
             'last_login_at' => 'Last Login At',
             'status' => 'Status',
         ];
