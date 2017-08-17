@@ -36,5 +36,16 @@ $dataProvider = new ActiveDataProvider([
         'value' => function($data){
             return date('Y-m-d H:i:s',$data->created_at);
         }],
+        [
+//            'class' => 'yii\grid\CheckboxColumn', //复选框
+//            '操作',
+            'class' => 'yii\grid\ActionColumn',
+
+        ],
     ],
+    //当没有用户的时候显示
+    'emptyText' => '当前没有用户',
+    'emptyTextOptions' => ['style'=>'font-weight:bold'],
+    'showOnEmpty' => false,//当数据不存在的时候，表格是否出现
+
 ])?>

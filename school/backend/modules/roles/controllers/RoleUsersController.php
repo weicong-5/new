@@ -22,4 +22,11 @@ class RoleUsersController extends Controller
     {
         return $this->render('/users/index');
     }
+
+    //查看用户详情
+    public function actionView(){
+        $id = \Yii::$app->request->get('id');
+
+        return $this->render('/users/detail',['id'=>$id]);
+    }
 }

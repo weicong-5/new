@@ -251,12 +251,14 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
                         'options' => ['class' => 'treeview'],
                         'items' =>[
                             ['label'=>'用户列表', 'url'=>['/role/role-users/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
-                            [
+//                            [
 //                                'label'=>Yii::t('backend', 'Users'),
 //                                'icon'=>'<i class="fa fa-users"></i>',
 //                                'url'=>['/user/admin/index'],
 //                                'visible'=>Yii::$app->user->can('/user/admin/index')
-                            ]
+//                            ]
+                            ['label' => '创建身份', 'url'=>['/role/status/select'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+
                         ]
                     ],
                     /*[
