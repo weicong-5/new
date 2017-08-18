@@ -11,9 +11,6 @@ $id=Yii::$app->request->get('uid',0);
 ?>
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel-title">
-<!--            <span>请选择角色</span>-->
-        </div>
         <div class="panel-body">
             <?php $form =ActiveForm::begin()?>
             <?= $form->field($model,'rolename')->dropDownList($roles,['prompt'=>'请选择角色','onchange'=>'
@@ -28,6 +25,3 @@ $id=Yii::$app->request->get('uid',0);
     </div>
 </div>
 
-<script>
-    console.log($('#roles-rolename').val());
-</script>

@@ -44,7 +44,7 @@ $userInfo = \common\models\User::find()->where(['id'=>$id])->one();
                             <td colspan='2'>暂无数据</td></tr>";
                 }else{
                     foreach($statusList as $k =>$list){
-
+                        echo "<tr><td>".$list['status_id']."</td><td>编辑||删除</td></tr>";
                     }
                 }?>
                 <tr></tr>

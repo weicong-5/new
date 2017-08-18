@@ -5,13 +5,12 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "student". 学生身份表
+ * This is the model class for table "student".
  *
  * @property integer $id
  * @property string $student_num
  * @property string $name
  * @property integer $sex
- * @property string $birth
  * @property integer $school_id
  * @property integer $grade_id
  * @property integer $class_id
@@ -32,10 +31,10 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['student_num', 'name', 'sex', 'birth', 'school_id', 'grade_id', 'class_id'], 'required'],
+            [['student_num', 'name', 'sex', 'school_id', 'grade_id', 'class_id'], 'required'],
             [['sex', 'school_id', 'grade_id', 'class_id'], 'integer'],
             [['student_num'], 'string', 'max' => 256],
-            [['name', 'birth'], 'string', 'max' => 32],
+            [['name'], 'string', 'max' => 32],
         ];
     }
 
@@ -46,13 +45,12 @@ class Student extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'student_num' => 'Student Num',
-            'name' => 'Name',
-            'sex' => 'Sex',
-            'birth' => 'Birth',
-            'school_id' => 'School ID',
-            'grade_id' => 'Grade ID',
-            'class_id' => 'Class ID',
+            'student_num' => '学号',
+            'name' => '姓名',
+            'sex' => '性别',
+            'school_id' => '学校',
+            'grade_id' => '年级',
+            'class_id' => '班级',
         ];
     }
 }
