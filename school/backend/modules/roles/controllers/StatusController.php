@@ -31,7 +31,10 @@ class StatusController extends BaseController
         return $this->render('index');
     }
 
-    //点击创建身份
+    /**
+     * 选择角色
+     * @return string
+     */
     public function actionSelect()
     {
         $roles = Roles::getAllRoles();
@@ -89,7 +92,11 @@ class StatusController extends BaseController
         }
     }
 
+    //创建教师职工身份
     public function actionCreateTeacherStaff(){
-
+        $uid = \Yii::$app->request->get('uid',0);
+        $rid = \Yii::$app->request->get('rid',0);
+        $schools = School::getAllSchool();
+        $model = new TeacherForm();
     }
 }

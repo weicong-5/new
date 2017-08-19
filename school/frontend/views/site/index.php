@@ -3,51 +3,74 @@
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
+
+use \yii\bootstrap\Modal;
+
+if(!Yii::$app->user->isGuest){
+    $uid =  Yii::$app->user->identity->id;
+    $username = Yii::$app->user->identity->username;
+
+
+    $status_list = \common\models\RelationUserStatus::getStatusByUser($uid);
+//    print_r($status_list);
+//echo $form = \yii\widgets\ActiveForm::begin();
+//echo  \yii\helpers\Html::dropDownList('select-status',null,ArrayHelper::map($data,''))
+    $select_data = null;
+    if($status_list){
+        Modal::begin([
+            'id' => 'select-modal',
+            'header' => '<h4 class="modal-title">选择身份</h4>',
+            'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">确定</a>'
+        ]);
+        echo "<h3>欢迎您，{$username} </h3>";
+        echo "<h3>欢迎您，{$uid} </h3>";
+        $select_data[]='--选择身份--';
+        foreach($status_list as $item){
+            $role_name = \backend\Modules\roles\models\Roles::getRoleNameById($item['role_id']);
+            $name = \common\models\Student::getAttributeById('name',$item['status_id']);
+            $select_data[] = "{$role_name}——{$name}";
+        }
+        echo \yii\helpers\Html::dropDownList('select_status',[],$select_data,['class'=>'form-control']);
+
+        Modal::end();
+    }else{
+        Modal::begin([
+            'id' => 'select-modal',
+            'header' => '<h4 class="modal-title">选择身份</h4>',
+            'footer' => '<a href="#" class="btn btn-primary disabled" data-dismiss="modal">确定</a>'
+        ]);
+        echo "<h3>欢迎您，{$username} </h3>";
+        echo "<h3>欢迎您，{$uid} </h3>";
+        $select_data[] = '暂无身份，请与管理员联系';
+        echo \yii\helpers\Html::dropDownList('select_status',[],$select_data,['class'=>'form-control']);
+
+        Modal::end();
+    }
+}
+
+
+
+
+//$js = <<<JS
+// $(document).on('click','#select',function(){
+//    $('.modal-body').html({$username});
+// });
+//JS;
+
+
 ?>
 <div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
     <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
+        <?php
+        if(!Yii::$app->user->isGuest){
+            echo \yii\helpers\Html::a('select','#',[
+                'id' => 'select',
+                'data-toggle' => 'modal',// 注意是modal 不是model
+                'data-target' => '#select-modal',
+                'class' => 'btn btn-success',
+            ]);
+        }
+        ?>
     </div>
 </div>

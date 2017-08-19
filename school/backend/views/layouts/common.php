@@ -257,7 +257,7 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
 //                                'url'=>['/user/admin/index'],
 //                                'visible'=>Yii::$app->user->can('/user/admin/index')
 //                            ]
-                            ['label' => '创建身份', 'url'=>['/role/status/select'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => '角色列表', 'url'=>['#'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
 
                         ]
                     ],
