@@ -52,7 +52,10 @@ class School extends \yii\db\ActiveRecord
         ];
     }
 
-    //获取所有学校方法
+    /**
+     * 获取所有学校
+     * @return null
+     */
     public static function getAllSchool(){
         $result = null;
         $res = School::find()->asArray()->all();
@@ -62,5 +65,14 @@ class School extends \yii\db\ActiveRecord
             }
         }
         return $result;
+    }
+
+    public static function getSchoolNameById($id){
+        $res = School::find()->where(['id'=>$id])->asArray()->one();
+        if($res){
+            return $res['school_name'];
+        }else{
+            return null;
+        }
     }
 }

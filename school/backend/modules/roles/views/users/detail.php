@@ -32,7 +32,9 @@ $userInfo = \common\models\User::find()->where(['id'=>$id])->one();
             <thead>
                 <tr>
                     <th>编号</th>
-                    <th>身份</th>
+                    <th>角色</th>
+                    <th>姓名</th>
+                    <th>学校</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -45,10 +47,19 @@ $userInfo = \common\models\User::find()->where(['id'=>$id])->one();
                             <td colspan='2'>暂无数据</td></tr>";
                 }else{
 //                    print_r($statusList);
-                    foreach($statusList as $k=>$v){
+                    foreach($statusList as $list){
 //                        print_r($list);
+                        $id = $list['id'];
+                        $status_id = $list['status_id'];
+                        $role_id = $list['role_id'];
 //                        exit;
-                        echo "<tr><td>".$k."</td><td>".$v."</td><td>编辑||删除</td></tr>";
+                        $role_name = \backend\Modules\roles\models\Roles::getRoleNameById($role_id);
+                        //根据角色不同 从不同身份表中获取数据
+                        $role = \backend\Modules\roles\models\Roles::switchRole($role_id);
+                        $name = $role::getAttributeById('name',$status_id);
+                        $school_id = $role::getAttributeById('school_id',$status_id);
+                        $school_name = \common\models\School::getSchoolNameById($school_id);
+                        echo "<tr><td>".$id."</td><td>".$role_name."</td><td>".$name."</td><td>".$school_name."</td><td>编辑||删除</td></tr>";
                     }
                 }?>
                 <tr></tr>

@@ -42,7 +42,7 @@ AppAsset::register($this);
         ['label' => Yii::t('frontend','Contact'), 'url' => ['/site/contact']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => Yii::t('frontend','Signup'), 'url' => ['/site/signup']];
+//        $menuItems[] = ['label' => Yii::t('frontend','Signup'), 'url' => ['/site/signup']];
         $menuItems[] = ['label' => Yii::t('frontend','Login'), 'url' => ['/site/login']];
     } else {
         $menuItems[] = '<li>'

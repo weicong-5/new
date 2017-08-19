@@ -53,4 +53,19 @@ class Student extends \yii\db\ActiveRecord
             'class_id' => '班级',
         ];
     }
+
+    /**
+     * 根据id获取学生表中的name字段属性
+     * @param $name
+     * @param $id
+     * @return mixed|null
+     */
+    public static function getAttributeById($name,$id){
+        $res = Student::find()->where(['id'=>$id])->asArray()->one();
+        if($res){
+            return $res[$name];
+        }else{
+            return null;
+        }
+    }
 }

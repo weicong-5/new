@@ -10,6 +10,7 @@ use Yii;
  * @property integer $id
  * @property integer $user_id
  * @property integer $status_id
+ * @property integer $role_id
  */
 class RelationUserStatus extends \yii\db\ActiveRecord
 {
@@ -27,8 +28,8 @@ class RelationUserStatus extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'status_id'], 'required'],
-            [['user_id', 'status_id'], 'integer'],
+            [['user_id', 'status_id', 'role_id'], 'required'],
+            [['user_id', 'status_id', 'role_id'], 'integer'],
         ];
     }
 
@@ -41,6 +42,7 @@ class RelationUserStatus extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'status_id' => 'Status ID',
+            'role_id' => 'Role ID',
         ];
     }
 
@@ -52,12 +54,12 @@ class RelationUserStatus extends \yii\db\ActiveRecord
         $status=null;
         $res = RelationUserStatus::find()->where(['user_id' => $user_id])->asArray()->all();
         if($res){//如果存在身份
-            foreach($res as $k =>$list){
-                $status[$list['id']] = $list['status_id'];
-            }
+//            foreach($res as $k =>$list){
+//                $status[$list['id']] = $list['status_id'];
+//            }
+            return $res;
         }else{
-            $status = null;
+            return $status;
         }
-        return $status;
     }
 }

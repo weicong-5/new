@@ -39,36 +39,21 @@ class StatusController extends BaseController
         return $this->render('select', ['model' => $model, 'roles' => $roles]);
     }
 
-    //创建身份之前确定角色
-//    public function actionChoose(){
-//        $model = new RoleForm();
-//        if($model->load(\Yii::$app->request->post()) && $model->validate()){
-//            return $this->redirect(['status/create','rid'=>$model->id]);
-//        }else{
-//            return $this->redirect(['status/create','model'=>$model]);
-//        }
-//    }
-    //根据rid不同创建不同的身份
+    /**
+     * 选择创建的角色
+     * @return null|string|\yii\web\Response
+     */
     public function actionCreate()
     {
         $rid = \Yii::$app->request->get('rid', 0);
         $uid = \Yii::$app->request->get('uid', 0);
 
-        //获取所有学校
-        $schools = School::getAllSchool();
-        //获取所有年级
-
-
         switch ($rid) {
             case 1:
-//                $model = new StudentForm();
-//                return $this->render('CreateStudent',['model'=>$model,'rid'=>$rid,'uid'=>$uid,'schools'=>$schools]);
-//                return $this->redirect(['index','rid'=>$rid,'uid'=>$uid]);
                 return $this->redirect(['create-student', 'rid' => $rid, 'uid' => $uid]);//注意 驼峰式命名 大写转小写 中间-连接
-//                return $this->render('createStudent',['model'=>$model,'rid'=>$rid,'uid'=>$uid,'schools'=>$schools]);
                 break;
             case 2:
-                return $this->render('createTeacherStaff', ['uid' => $uid]);
+                return $this->redirect('create-teacher-staff', ['rid'=>$rid,'uid' => $uid]);
                 break;
             default:
                 return null;
@@ -77,42 +62,12 @@ class StatusController extends BaseController
     }
 
 
-    //创建学生身份
-//    public function actionCreateStudent(){
-//        $uid = \Yii::$app->request->get('uid',0);
-//        $rid = \Yii::$app->request->get('rid',0);
-//
-//        $model = new StudentForm();
-//        //如果是提交操作
-//        if($model->load(\Yii::$app->request->post()) && $model->validate()){
-//            if(!$model->create()){
-//                \Yii::$app->session->setFlash('warning',$model->_lastError);
-////                $this->renderJSON([],'学生身份创建失败',-1);
-////                return $this->redirect(['role/role-users/view','id'=>$uid]);
-//            }else{
-//                $relation = new RelationUserStatus();
-//                $relation['user_id'] = $uid;
-//                $relation['status_id'] = $model->id;
-//                $res = $relation->save();
-//                if(!$res){
-//                    \Yii::$app->session->setFlash('warning','用户身份关系关联失败');
-////                    $this->renderJSON([],'用户身份关系关联失败',-1);
-////                    return $this->redirect(['role/role-users/view','id'=>$uid]);
-//                }else{
-//                    \Yii::$app->session->setFlash('success','成功');
-////                    $this->renderJSON([],'操作成功',200);
-////                    return $this->redirect(['role/role-users/view','id'=>$uid]);
-//                    return $this->redirect(['role/role-users/view','id'=>$uid]);
-//                }
-//            }
-//        }else{
-//            return $this->render('createStudent',['model'=>$model,'rid'=>$rid,'uid'=>$uid]);
-//        }
-//    }
-
+    /**
+     * 创建学生身份
+     * @return string|\yii\web\Response
+     */
     public function actionCreateStudent()
     {
-//        echo '111';
         $uid = \Yii::$app->request->get('uid', 0);
         $rid = \Yii::$app->request->get('rid', 0);
         $schools = School::getAllSchool();
@@ -120,7 +75,7 @@ class StatusController extends BaseController
         $model->setScenario(StudentForm::SCENARIOS_CREATE);
         //如果是提交操作
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
-            if (!$model->create($uid)) {
+            if (!$model->create($uid,$rid)) {
                 \Yii::$app->session->setFlash('warning', $model->_lastError);
                 $roles = Roles::getAllRoles();
                 $model = new Roles();
@@ -132,8 +87,9 @@ class StatusController extends BaseController
         else{
             return $this->render('createStudent', ['model' => $model, 'rid' => $rid, 'uid' => $uid,'schools'=>$schools]);
         }
+    }
 
-//        return $this->render('createStudent', ['model' => $model, 'rid' => $rid, 'uid' => $uid,'schools'=>$schools]);
-//        return $this->redirect(['role-users/view','id'=>$uid]);
+    public function actionCreateTeacherStaff(){
+
     }
 }

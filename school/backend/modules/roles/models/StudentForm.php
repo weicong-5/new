@@ -60,7 +60,13 @@ class StudentForm extends Model{
         return array_merge(parent::scenarios(),$scenarios);
     }
 
-    public function create($uid){
+    /**
+     * 根据表单数据创建学生身份是否成功
+     * @param $uid
+     * @return bool
+     * @throws \yii\db\Exception
+     */
+    public function create($uid,$rid){
         //事务
         $transaction = \Yii::$app->db->beginTransaction();
         try{
@@ -75,6 +81,7 @@ class StudentForm extends Model{
             //调用事件
             $data = $model->getAttributes();
             $data['uid']=$uid;
+            $data['rid']=$rid;
             $this->_eventAfterCreate($data);
             $transaction->commit();
             return true;
@@ -85,15 +92,27 @@ class StudentForm extends Model{
         }
     }
 
+    /**
+     * 创建学生身份之后事件集
+     * @param $data
+     */
     public function _eventAfterCreate($data){//相当于把创建身份后调用的事件集中起来
         $this->on(self::EVENT_AFTER_CREATE,[$this,'_eventBindStatus'],$data);
         $this->trigger(self::EVENT_AFTER_CREATE);
     }
 
+    /**
+     * 将学生身份和用户绑定
+     * @param $event
+     * @return int
+     * @throws Exception
+     */
     public function _eventBindStatus($event){
         $relation = new RelationUserStatus();
         $relation->user_id = $event->data['uid'];
         $relation->status_id = $event->data['id'];
+        $relation->role_id = $event->data['rid'];
+
 
         if(!$relation->save()){
             throw new Exception("保存用户身份关联关系失败");
