@@ -23,17 +23,7 @@ use yii\filters\VerbFilter;
  */
 class StatusController extends BaseController
 {
-//    public function behaviors()
-//    {
-//        return [
-//            'verbs' => [
-//               'class' => VerbFilter::className(),
-//                'actions' => [
-//                    '*' => ['post','get'],
-//                ]
-//            ]
-//        ];
-//    }
+
 
 
     public function actionIndex()
@@ -127,24 +117,16 @@ class StatusController extends BaseController
         $rid = \Yii::$app->request->get('rid', 0);
         $schools = School::getAllSchool();
         $model = new StudentForm();
+        $model->setScenario(StudentForm::SCENARIOS_CREATE);
         //如果是提交操作
-        if($model->load(\Yii::$app->request->post())) {
-            echo 'ttttttttttttt';
-        }
-        if($model->validate()){
-            echo 'vvvvvvvvvvvvv';
-            print_r($model->attributes);
-        }else{
-            echo 'nnnnnnnnnnnnnn';
-        }
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
-            if (!$model->create()) {
+            if (!$model->create($uid)) {
                 \Yii::$app->session->setFlash('warning', $model->_lastError);
                 $roles = Roles::getAllRoles();
                 $model = new Roles();
                 return $this->render('select',['roles'=>$roles,'model'=>$model]);
             } else {
-                return $this->redirect(['role/role-users/view', 'id' => $uid]);
+                return $this->redirect(['/role/role-users/view', 'id' => $uid]);
             }
         }
         else{

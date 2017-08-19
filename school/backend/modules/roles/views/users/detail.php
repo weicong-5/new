@@ -31,6 +31,7 @@ $userInfo = \common\models\User::find()->where(['id'=>$id])->one();
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>编号</th>
                     <th>身份</th>
                     <th>操作</th>
                 </tr>
@@ -43,8 +44,11 @@ $userInfo = \common\models\User::find()->where(['id'=>$id])->one();
                    echo "<tr>
                             <td colspan='2'>暂无数据</td></tr>";
                 }else{
-                    foreach($statusList as $k =>$list){
-                        echo "<tr><td>".$list['status_id']."</td><td>编辑||删除</td></tr>";
+//                    print_r($statusList);
+                    foreach($statusList as $k=>$v){
+//                        print_r($list);
+//                        exit;
+                        echo "<tr><td>".$k."</td><td>".$v."</td><td>编辑||删除</td></tr>";
                     }
                 }?>
                 <tr></tr>

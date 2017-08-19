@@ -7,9 +7,11 @@
  */
 namespace backend\Modules\roles\models;
 
+use common\models\RelationUserStatus;
 use common\models\Student;
 use yii\base\Exception;
 use yii\base\Model;
+use yii\db\Query;
 
 class StudentForm extends Model{
     public $id;
@@ -22,10 +24,17 @@ class StudentForm extends Model{
 
     public $_lastError= "";//错误信息
 
+    //场景
+    const SCENARIOS_CREATE = 'create';//创建
+    const SCENARIOS_UPDATE = 'update';//更新
+
+    //定义事件
+    const EVENT_AFTER_CREATE = 'eventAfterCreate';//创建之后的事件
+
     public function rules(){
         return [
-//            [['id','name','student_num','sex','school_id','grade_id','class_id'],'required'],
-//            [['id','sex','school_id','grade_id'],'integer']
+            [['id','name','student_num','sex','school_id','grade_id','class_id'],'required'],
+            [['id','sex','school_id','grade_id'],'integer']
         ];
     }
 
@@ -42,7 +51,16 @@ class StudentForm extends Model{
         ];
     }
 
-    public function create(){
+    //场景设置
+    public function scenarios()
+    {
+        $scenarios = [
+            self::SCENARIOS_CREATE => ['student_num','name','sex','school_id','grade_id','class_id'],
+        ];
+        return array_merge(parent::scenarios(),$scenarios);
+    }
+
+    public function create($uid){
         //事务
         $transaction = \Yii::$app->db->beginTransaction();
         try{
@@ -53,6 +71,11 @@ class StudentForm extends Model{
             }
 
             $this->id = $model->id;
+
+            //调用事件
+            $data = $model->getAttributes();
+            $data['uid']=$uid;
+            $this->_eventAfterCreate($data);
             $transaction->commit();
             return true;
         }catch(Exception $e){
@@ -60,5 +83,21 @@ class StudentForm extends Model{
             $this->_lastError = $e->getMessage();
             return false;
         }
+    }
+
+    public function _eventAfterCreate($data){//相当于把创建身份后调用的事件集中起来
+        $this->on(self::EVENT_AFTER_CREATE,[$this,'_eventBindStatus'],$data);
+        $this->trigger(self::EVENT_AFTER_CREATE);
+    }
+
+    public function _eventBindStatus($event){
+        $relation = new RelationUserStatus();
+        $relation->user_id = $event->data['uid'];
+        $relation->status_id = $event->data['id'];
+
+        if(!$relation->save()){
+            throw new Exception("保存用户身份关联关系失败");
+        }
+        return $relation->id;
     }
 }

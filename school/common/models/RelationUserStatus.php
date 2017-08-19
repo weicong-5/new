@@ -5,10 +5,10 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "relation_user_status".用户身份关系表
+ * This is the model class for table "relation_user_status".
  *
  * @property integer $id
- * @property integer $uer_id
+ * @property integer $user_id
  * @property integer $status_id
  */
 class RelationUserStatus extends \yii\db\ActiveRecord
@@ -27,8 +27,8 @@ class RelationUserStatus extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uer_id', 'status_id'], 'required'],
-            [['uer_id', 'status_id'], 'integer'],
+            [['user_id', 'status_id'], 'required'],
+            [['user_id', 'status_id'], 'integer'],
         ];
     }
 
@@ -39,7 +39,7 @@ class RelationUserStatus extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'uer_id' => 'Uer ID',
+            'user_id' => 'User ID',
             'status_id' => 'Status ID',
         ];
     }
@@ -53,7 +53,7 @@ class RelationUserStatus extends \yii\db\ActiveRecord
         $res = RelationUserStatus::find()->where(['user_id' => $user_id])->asArray()->all();
         if($res){//如果存在身份
             foreach($res as $k =>$list){
-                $status[$list['id']] = $list['stats_id'];
+                $status[$list['id']] = $list['status_id'];
             }
         }else{
             $status = null;
