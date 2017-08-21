@@ -68,9 +68,18 @@ if(!Yii::$app->user->isGuest){
                 'id' => 'select',
                 'data-toggle' => 'modal',// 注意是modal 不是model
                 'data-target' => '#select-modal',
-                'class' => 'btn btn-success',
+//                'class' => 'btn btn-success',
+            'class' => 'btn',
             ]);
         }
+        echo \yii\helpers\Html::a('学生专栏','/status/student-dir',[
+            'class' => 'btn'
+        ]).
+            \yii\helpers\Html::a('教师专栏','/status/teacher-dir',[
+                'class' => 'btn',
+            ])
         ?>
     </div>
+
+
 </div>

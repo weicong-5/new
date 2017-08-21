@@ -212,4 +212,8 @@ class SiteController extends CoreController
             'model' => $model,
         ]);
     }
+
+    public function actionPersonal(){
+        return $this->render('personal');
+    }
 }

@@ -45,14 +45,24 @@ AppAsset::register($this);
 //        $menuItems[] = ['label' => Yii::t('frontend','Signup'), 'url' => ['/site/signup']];
         $menuItems[] = ['label' => Yii::t('frontend','Login'), 'url' => ['/site/login']];
     } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link']
-            )
-            . Html::endForm()
-            . '</li>';
+        $menuItems[] =
+//            '<li>'
+//            . Html::beginForm(['/site/logout'], 'post')
+//            . Html::submitButton(
+//                'Logout (' . Yii::$app->user->identity->username . ')',
+//                ['class' => 'btn btn-link']
+//            )
+//            . Html::endForm()
+//            . '</li>';
+            [
+                'label' => yii::$app->user->identity->username,
+                'items' => [
+//                    ['label'=>'个人中心','url'=> ['/site/personalCenter'],'linkOptions' => ['data-method' => 'get']],
+                    ['label'=>'个人中心','url'=> ['/site/personal']],
+                    ['label' =>'退出','url' => ['/site/logout'],'linkOptions' => ['data-method' => 'post']],
+
+                ],
+            ];
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
