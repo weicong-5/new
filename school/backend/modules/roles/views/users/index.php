@@ -32,10 +32,11 @@ $dataProvider = new ActiveDataProvider([
         'id',
         'username',
         'email',
-        ['attribute' => 'created_at',
+        ['attribute' => 'created_at',//指明函数作用的属性
         'value' => function($data){
             return date('Y-m-d H:i:s',$data->created_at);
         }],
+        //操作
         [
 //            'class' => 'yii\grid\CheckboxColumn', //复选框
 //            '操作',

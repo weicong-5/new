@@ -13,6 +13,7 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use frontend\controllers\base\BaseController;
 
+date_default_timezone_set('PRC');//设置时区为PRC
 /**
  * Site controller
  */
@@ -72,7 +73,7 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('index',['time'=>date('H:i:s')]);//将当前时间传过去
     }
 
     /**
@@ -209,5 +210,13 @@ class SiteController extends BaseController
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * 自动刷新时间
+     * @return string
+     */
+    public function actionAutoRefresh(){
+        return $this->render('index',['time'=> date('H:i:s')]);
     }
 }
