@@ -8,12 +8,13 @@ $this->title = 'My Yii Application';
 $script = <<< JS
 $(document).ready(function(){
 setInterval(function(){
-//$("#refreshButton").click();
 $('#refreshButton').click();
 },1000);
 });
 JS;
-$this->registerJs($script)
+$this->registerJs($script);
+
+$session = Yii::$app->session;
 
 ?>
 <div class="site-index">
@@ -34,6 +35,20 @@ $this->registerJs($script)
                 <h2> CurrentTime:<bold><?= $time ?></bold></h2>
                 <?= \yii\helpers\Html::a('refresh',['site/auto-refresh'],['class'=>'btn btn-primary hidden','id'=>'refreshButton'])?>
                 <?php Pjax::end()?>
+            </div>
+            <div class="col-lg-4">
+                <?php
+                    if(!$session->isActive) {
+                        $session->open();
+                        $post = new \common\models\Posts();
+                        $post->id = 5;
+                        $post->title = '被偷走的那五年';
+                        $post->content = '讲述一对情侣之间的爱情故事，因为车祸而让女主失去了五年的记忆';
+                        $session->set('post',serialize($post));
+
+                        unset($post);
+                    }
+                ?>
             </div>
 <!--            <div class="col-lg-4">-->
 <!--                <h2>Heading</h2>-->
