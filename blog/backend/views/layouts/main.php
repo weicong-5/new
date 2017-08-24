@@ -35,13 +35,14 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    $menuItems = [
+    $menuLeft = [
         ['label' => Yii::t('yii','Home'), 'url' => ['/site/index']],
+        ['label' => '文章管理','url'=>['/post/index']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuRight[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = '<li>'
+        $menuRight[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
                 'Logout (' . Yii::$app->user->identity->username . ')',
@@ -51,8 +52,12 @@ AppAsset::register($this);
             . '</li>';
     }
     echo Nav::widget([
+        'options' => ['class'=>'navbar-nav navber-left'],
+        'items' => $menuLeft,
+    ]);
+    echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
+        'items' => $menuRight,
     ]);
     NavBar::end();
     ?>

@@ -1,6 +1,8 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Cats;
+use common\models\Posts;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -17,6 +19,9 @@ date_default_timezone_set('PRC');//设置时区为PRC
 /**
  * Site controller
  */
+
+
+
 class SiteController extends BaseController
 {
     /**
@@ -105,6 +110,8 @@ class SiteController extends BaseController
     public function actionLogout()
     {
         Yii::$app->user->logout();
+
+
 
         return $this->goHome();
     }

@@ -11,7 +11,8 @@ use yii\captcha\Captcha;
 $this->title = '个人中心';
 $this->params['breadcrumbs'][] = $this->title;
 
-$user = \common\models\User::find()->where
+//$user = \common\models\User::find()->where
+
 
 ?>
 <div class="site-contact">

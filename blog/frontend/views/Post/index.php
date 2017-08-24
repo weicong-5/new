@@ -24,10 +24,10 @@ if($session->isActive){
 <h2>取出session中的post</h2>
 <div>
     <?php
-        if(isset($session['post'])){
-            $post = unserialize($session->get('post'));
-            echo $post->title;
+    if(isset($session['post'])){
+        $post = unserialize($session->get('post'));
+        echo $post->title;
 
-        }
+    }
     ?>
 </div>

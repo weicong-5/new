@@ -42,6 +42,14 @@ class Cats extends Base
         ];
     }
 
+    public function scenarios()
+    {
+        return [
+            'scenario1' => ['id','cat_name'],
+            'scenario2' => ['cat_name'],
+        ];
+    }
+
     //获取所有分类
     public static function getAllCats(){
         $cats = ['0'=> '暂无分类'];//id 永远不可能是0

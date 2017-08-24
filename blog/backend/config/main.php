@@ -19,6 +19,17 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
         ],
+        //语言包配置
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'fileMap' => [
+                        'common' => 'common.php',
+                    ],
+                ]
+            ],
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],

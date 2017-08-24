@@ -50,6 +50,18 @@ class PostController extends  BaseController{
 
     public function actionIndex(){
 
+//        $cat = new \common\models\Cats();
+//        $cat->setScenario('scenario2');
+//        $testData = [
+//            'data' => [
+//                'id' => 5,
+//                'cat_name' => '分类five',
+//            ],
+//        ];
+//        $cat->load($testData,'data');
+//        echo $cat->id;
+//        echo $cat->cat_name;
+
         return $this->render('index');
     }
 
