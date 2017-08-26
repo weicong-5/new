@@ -1,8 +1,9 @@
 <?php
 
-use yii\helpers\Html;
+//use yii\helpers\Html;
 use yii\grid\GridView;
 use \kartik\select2\Select2;
+use \kartik\helpers\Html;
 
 date_default_timezone_set('PRC');
 
@@ -41,6 +42,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     'unselectLabel' => '<i class="glyphicon glyphicon-remove-circle">Untag All</i>',
                     'selectOptions' => ['class'=> 'text-success'],
                     'unselectOptions' => ['class'=>'text-danger']
+                ],
+                //输入框的插件
+                'addon'=> [
+                    'prepend' => [
+                        'content' => Html::icon('globe'),
+                    ],
+                    'append' => [
+                        'content' => Html::button(Html::icon('map-marker'),[
+                           'class' => 'btn btn-primary',
+                            'title' => '在地图上标记',
+                            'data-toggle' => 'tooltip',
+                        ]),
+                        'asButton' => true,
+                    ]
                 ],
                 'data' => [1=>'First',2=>'Second',3=>'Third',4=>'Fourth',5=>'Fifth'],
                 'options' => [

@@ -12,8 +12,10 @@ use common\models\Cats;
 use frontend\models\PostForm;
 use Yii;
 use frontend\controllers\base\BaseController;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 class PostController extends  BaseController{
 
@@ -61,8 +63,9 @@ class PostController extends  BaseController{
 //        $cat->load($testData,'data');
 //        echo $cat->id;
 //        echo $cat->cat_name;
+        $model = new PostForm();
 
-        return $this->render('index');
+        return $this->render('index',['model'=>$model]);
     }
 
     //创建文章控制器
@@ -81,6 +84,27 @@ class PostController extends  BaseController{
         $cats = Cats::getAllCats();
         return $this->render('create',['model'=>$model,'cats'=>$cats]);
     }
+
+    public function actionSearchcat($q=null,$id=null){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $out = ['results'=>['id'=>'','text'=>'']];
+        if(!is_null($q)){
+            $query = new Query();
+            $query->select('id,cat_name as text')->from('cats')->where(['like','cat_name',$q])->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }elseif($id>0){
+            $out['results'] = ['id'=>$id ,'text'=>Cats::findOne($id)->cat_name];
+        }
+//
+//        $data = Cats::find()->select('id cat_name as text')->andFilterWhere(['like','cat_name',$q])->limit(50)->asArray()->all();
+//
+//        $out['results'] = array_values($data);
+
+        return $out;
+    }
+
 
     //在使用图片上传控件的控制器中  附上以下代码
     public function actions(){

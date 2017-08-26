@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 use yii\widgets\Pjax;
+use kartik\helpers\Html;
 
 $this->title = 'My Yii Application';
 
@@ -13,6 +14,10 @@ $('#refreshButton').click();
 });
 JS;
 $this->registerJs($script);
+
+
+//\backend\assets\AppAsset::register($this);
+//\backend\assets\AppAsset::addJsScript($this,$script);
 
 $session = Yii::$app->session;
 
@@ -30,6 +35,28 @@ $session = Yii::$app->session;
     <div class="body-content">
 
         <div class="row">
+            <?php
+                echo Html::jumbotron([
+                    'heading' => '欢迎您',
+                    'body' => '这是你一个让你涨见识的好地方',
+                    'buttons' => [
+                        [
+                            'label' => '了解更多',
+                            'icon' => 'book',
+                            'URL' => '#',
+                            'type' => Html::TYPE_PRIMARY,
+                            'size' => Html::SIZE_LARGE,
+                        ],
+                        [
+                            'label' => '联系我们',
+                            'icon' => 'phone',
+                            'URL' => '#',
+                            'type' => Html::TYPE_DANGER,
+                            'size' => Html::SIZE_LARGE,
+                        ]
+                    ]
+                ]);
+            ?>
             <div class="col-lg-4">
                 <?php Pjax:: begin()?>
                 <h2> CurrentTime:<bold><?= $time ?></bold></h2>

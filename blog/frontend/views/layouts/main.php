@@ -3,7 +3,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use yii\helpers\Html;
+use kartik\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
@@ -98,6 +98,7 @@ AppAsset::register($this);
 //            'label' => '<img src="'.Yii::$app->params['avatar']['small'].'" alt="test">',
             'linkOptions' => ['class' => 'avatar'],
             'items' => [
+                ['label'=>'消息 '. Html::badge('15'),'url' => ['#'],'linkOptions' => ['data-method' => 'get']],
                 ['label' =>'<i class"fa fa-sign-out></i>退出','url' => ['/site/logout'],'linkOptions' => ['data-method' => 'post']],
             ],
         ];
