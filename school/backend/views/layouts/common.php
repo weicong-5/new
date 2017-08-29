@@ -210,6 +210,7 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
                         'icon'=>'<i class="fa fa-edit"></i>',
                         'options'=>['class'=>'treeview'],
                         'items'=>[
+                            ['label'=>'学校列表', 'url'=>['/schools/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
                             [
                                 'label'=>Yii::t('school', 'School List'),
                                 'url'=>['/school/school/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>',
@@ -257,7 +258,7 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
 //                                'url'=>['/user/admin/index'],
 //                                'visible'=>Yii::$app->user->can('/user/admin/index')
 //                            ]
-                            ['label' => '角色列表', 'url'=>['#'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+                            ['label' => '角色列表', 'url'=>['/users/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
 
                         ]
                     ],

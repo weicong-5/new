@@ -27,14 +27,19 @@ $config = [
         //新增的
         'role' => [
             'class' => 'backend\modules\roles\role'
-        ]
+        ],
+//        'user' => [
+//            'class' => 'backend\modules\user\user',
+////            'identityClass' => 'backend\modules\user\models\User',
+//        ]
+
     ],
     'components' => [
-        /*'user' => [
-            'class'=>'yii\web\User',
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-        ],*/
+//        'user' => [
+//            'class'=>'yii\web\User',
+//            'identityClass' => 'common\models\User',
+//            'enableAutoLogin' => true,
+//        ],
 //        'user' => [
 //            'identityCookie' => [
 //                'name'     => '_backendIdentity',

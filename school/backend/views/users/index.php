@@ -4,38 +4,41 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel backend\modules\school\models\search\SchoolSearch */
+/* @var $searchModel common\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('school', 'Schools');
+$this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="school-index">
+<div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('school', 'Create School'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+<?php Pjax::begin(); ?>
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name',
-            'province_id',
-            'city_id',
-            'area_id',
-            // 'address',
-            // 'school_type',
-            // 'school_num',
-            // 'manage_uid',
-            // 'quantong_id',
-            // 'number:ntext',
-            // 'deny_code:ntext',
+            'username',
+            'email:email',
+//            'password_hash',
+//            'auth_key',
+            // 'confirmed_at',
+            // 'unconfirmed_email:email',
+            // 'blocked_at',
+            // 'registration_ip',
+            // 'created_at',
+            // 'updated_at',
+            // 'last_login_at',
+            // 'status',
+            // 'is_manager',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

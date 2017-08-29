@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\Score;
+use yii\base\Exception;
 use yii\filters\AccessControl;
 use mdm\admin\models\User;
 use yii\filters\VerbFilter;
@@ -30,10 +32,10 @@ class StatusController extends \yii\web\Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['teacher-dir','student-dir'],
+                'only' => ['teacher-dir','student-dir','insert-score'],
                 'rules' => [
                     [
-                        'actions' => ['teacher-dir', 'student-dir'],
+                        'actions' => ['teacher-dir', 'student-dir','insert-score'],
                         'allow' => true,
                         'roles' => ['@'],//表示只有登录之后才能访问
                     ],
@@ -57,4 +59,10 @@ class StatusController extends \yii\web\Controller
         return $this->render('teacher_dir');
     }
 
+    public function actionInsertScore(){
+        $score = new Score();
+        $name = 'wei';
+        $times = Score::find()->where(['name'=>$name])->max('times')+1;
+        return $this->render('insert_score',['times'=>$times]);
+    }
 }

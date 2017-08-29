@@ -5,7 +5,6 @@ namespace common\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
-use yii\base\NotSupportedException;
 
 /**
  * This is the model class for table "user".
@@ -31,7 +30,7 @@ use yii\base\NotSupportedException;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0; //账号被注销
+    const STATUS_DELETED = 0;//账号被注销
     const STATUS_ACTIVE = 1;
 
     const IS_USER = 0;
@@ -41,25 +40,24 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-//        return 'user';
         return '{{%user}}';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
     }
 
     /**
      * @inheritdoc
      */
-
-    public function behaviors()
-    {
-       return [
-         TimestampBehavior::className(),
-       ];
-    }
-
     public function rules()
     {
         return [
-            [['confirmed_at', 'blocked_at', 'created_at', 'updated_at', 'last_login_at', 'status','is_manager'], 'integer'],
+            [['username', 'email', 'password_hash', 'auth_key', 'created_at', 'updated_at'], 'required'],
+            [['confirmed_at', 'blocked_at', 'created_at', 'updated_at', 'last_login_at', 'status', 'is_manager'], 'integer'],
             [['username', 'email', 'unconfirmed_email'], 'string', 'max' => 255],
             [['password_hash'], 'string', 'max' => 60],
             [['auth_key'], 'string', 'max' => 32],
@@ -88,6 +86,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'updated_at' => '更新时间',
             'last_login_at' => 'Last Login At',
             'status' => 'Status',
+            'is_manager' => 'Is Manager',
         ];
     }
 
@@ -115,11 +114,11 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasMany(Token::className(), ['user_id' => 'id']);
     }
 
-    //IdentityInterface 接口 必须重写的方法如下
+    //实现IdentityInterface 接口 必须重写的方法有以下几个：
     //根据id查找user
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id,'status' => self::STATUS_ACTIVE,'is_manager' => self::IS_USER]);
+        return static::findOne(['id'=>$id ,'status'=>self::STATUS_ACTIVE,'is_manager'=>self::IS_USER]);
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
@@ -164,6 +163,5 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function generateAuthKey(){
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
-
 
 }

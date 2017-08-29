@@ -4,11 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\school\models\School */
+/* @var $model common\models\School */
 
-$this->title = Yii::t('school', 'Create School');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('school', 'Schools'), 'url' => ['index']];
+$this->title = 'Create School';
+$this->params['breadcrumbs'][] = ['label' => 'Schools', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$area_data = \common\models\Area::getAll();
 ?>
 <div class="school-create">
 
@@ -16,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'area_data' => $area_data,
     ]) ?>
 
 </div>

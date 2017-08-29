@@ -77,6 +77,9 @@ if(!Yii::$app->user->isGuest){
         ]).
             \yii\helpers\Html::a('教师专栏','/status/teacher-dir',[
                 'class' => 'btn',
+            ]).
+            \yii\helpers\Html::a('插入成绩','/status/insert-score',[
+                'class' => 'btn',
             ])
         ?>
     </div>
