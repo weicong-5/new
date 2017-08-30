@@ -262,6 +262,25 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
 
                         ]
                     ],
+                    /*新增 班级管理*/
+                    [
+                        'label' => '班级',
+                        'url' => '#',
+                        'icon' => '<i class="fa fa-edit"></i>',
+                        'options' => ['class' => 'treeview'],
+                        'items' =>[
+                            ['label'=>'班级列表', 'url'=>['/grade/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+                            ['label'=>'课程列表', 'url'=>['/course/index'],'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+//                            [
+//                                'label'=>Yii::t('backend', 'Users'),
+//                                'icon'=>'<i class="fa fa-users"></i>',
+//                                'url'=>['/user/admin/index'],
+//                                'visible'=>Yii::$app->user->can('/user/admin/index')
+//                            ]
+//                            ['label' => '角色列表', 'url'=>['/users/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+
+                        ]
+                    ],
                     /*[
                         'label'=>Yii::t('backend', 'System'),
                         'options' => ['class' => 'header']

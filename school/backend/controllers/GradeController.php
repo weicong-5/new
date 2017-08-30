@@ -2,19 +2,19 @@
 
 namespace backend\controllers;
 
-use common\models\Grade;
-use Yii;
+use common\models\Course;
 use common\models\School;
-use common\models\SchoolSearch;
-use yii\data\ActiveDataProvider;
+use Yii;
+use common\models\Grade;
+use common\models\GradeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * SchoolsController implements the CRUD actions for School model.
+ * GradeController implements the CRUD actions for Grade model.
  */
-class SchoolsController extends Controller
+class GradeController extends Controller
 {
     /**
      * @inheritdoc
@@ -32,12 +32,12 @@ class SchoolsController extends Controller
     }
 
     /**
-     * Lists all School models.
+     * Lists all Grade models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SchoolSearch();
+        $searchModel = new GradeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,47 +47,42 @@ class SchoolsController extends Controller
     }
 
     /**
-     * Displays a single School model.
+     * Displays a single Grade model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-//        $classes = Grade::find()->where(['school_id'=>$id])->asArray()->all();//得到某个学校的所有班级
-        $query = Grade::find()->where(['school_id'=>$id])->orderBy('room');
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pagesize' => 10
-            ],
-        ]);
-
+        $model = $this->findModel($id);
+        $course = Course::find()->where(['school_id'=>$id,'grade'=>$model->grade])->asArray()->one();
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'dataProvider' => $dataProvider,
+            'model' => $model,
+            'course' => $course,
         ]);
     }
 
     /**
-     * Creates a new School model.
+     * Creates a new Grade model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new School();
-
+        $model = new Grade();
+        $schools = array('0'=>'请选择');
+        $schools = array_merge($schools,School::getAllSchool());
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'schools' => $schools,
             ]);
         }
     }
 
     /**
-     * Updates an existing School model.
+     * Updates an existing Grade model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -106,7 +101,7 @@ class SchoolsController extends Controller
     }
 
     /**
-     * Deletes an existing School model.
+     * Deletes an existing Grade model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -119,15 +114,15 @@ class SchoolsController extends Controller
     }
 
     /**
-     * Finds the School model based on its primary key value.
+     * Finds the Grade model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return School the loaded model
+     * @return Grade the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = School::findOne($id)) !== null) {
+        if (($model = Grade::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -2,19 +2,17 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\grid\GridView;
-use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\School */
+/* @var $model common\models\Grade */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Schools', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Grades', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="school-view">
+<div class="grade-view">
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-5">
             <p>
                 <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a('Delete', ['delete', 'id' => $model->id], [
@@ -30,24 +28,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
                     'id',
-                    'area_id',
+//            'school_id',
+                    'grade',
+                    'room',
                     'school_name',
-                    'address',
                 ],
             ]) ?>
         </div>
-        <div class="col-lg-6">
-            <h6>所有班级</h6>
-            <?php Pjax::begin()?>
-            <?=GridView::widget([
-                'dataProvider' => $dataProvider,
-                'columns' => [
-                    'id',
-                    'grade',
-                    'room'
-                ]
-            ])?>
-            <?php Pjax::end()?>
+        <div class="col-lg-7">
+            所有课程<br>
+            <?= Html::a('添加课程',['url','[]'],['class' => 'btn btn-primary'])?><br>
+            <?= $course?>
+            <?php
+                if(!$course){
+                    echo '暂无课程';
+                }else{
+
+                }
+            ?>
         </div>
     </div>
+
 </div>
