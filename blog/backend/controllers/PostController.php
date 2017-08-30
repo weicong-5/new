@@ -65,12 +65,24 @@ class PostController extends Controller
     {
         $model = new Posts();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('create', [
+//                'model' => $model,
+//            ]);
+//        }
+        //修改之后
+        if($model->load(Yii::$app->request->post())){
+            $course_array =explode(" ",$model->getAttribute('content'));
+            $model->setAttribute('content',serialize($course_array));
+            if($model->validate() && $model->save()){
+                return $this->redirect(['view','id'=>$model->id]);
+            }else{
+                echo '保存失败';
+            }
+        }else{
+            return $this->render('create',['model'=>$model]);
         }
     }
 
@@ -84,12 +96,25 @@ class PostController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        $model->setAttribute('content',implode(" ",unserialize($model->getAttribute('content'))));
+
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('update', [
+//                'model' => $model,
+//            ]);
+//        }
+        if($model->load(Yii::$app->request->post())){
+            $course_array =explode(" ",$model->getAttribute('content'));
+            $model->setAttribute('content',serialize($course_array));
+            if($model->validate() && $model->save()){
+                return $this->redirect(['view','id'=>$model->id]);
+            }else{
+                echo '保存失败';
+            }
+        }else{
+            return $this->render('create',['model'=>$model]);
         }
     }
 
@@ -120,5 +145,13 @@ class PostController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+
+    //自定义一个去除字符串中所有空格的方法
+    protected  function trim_all($str){
+        $front = array(""," ","\t","\n","\r");
+        $end = array(",",",",",",",",",");
+        return str_replace($front,$end,$str);
     }
 }

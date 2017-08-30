@@ -26,6 +26,8 @@ class PostForm extends Model{
     public $tags;//标签
     public $_lastError = "";//错误信息
 
+    public $cat_name;
+
     //用常量作为场景应用的变量
     const SCENARIOS_CREATE = 'create';//创建
     const SCENARIOS_UPDATE = 'update';//更新

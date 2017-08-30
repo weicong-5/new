@@ -31,13 +31,24 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'summary',
-            'content:ntext',
+//            'content:ntext',
+            [
+                'attribute'=>'content',
+                'value'=>function($data){
+                    return unserialize($data->content);
+                }
+            ],
             'label_img',
             'cat_id',
             'user_id',
             'user_name',
             'is_valid',
-            'created_at',
+            [
+                'attribute' => 'created_at',
+                'value' => function($data){
+                    return date($data->created_at);
+                }
+            ],
             'updated_at',
         ],
     ]) ?>

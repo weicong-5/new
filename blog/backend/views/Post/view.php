@@ -31,7 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'summary',
-            'content:ntext',
+            [
+                'attribute'=>'content',
+                'value'=>function($data){
+                    $arr = unserialize($data->content);
+                    return implode(" ",$arr);
+                }
+            ],
             'label_img',
             'cat_id',
             'user_id',
