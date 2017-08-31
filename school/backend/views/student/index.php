@@ -4,20 +4,17 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\CSearch */
+/* @var $searchModel common\models\StudentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Courses';
+$this->title = 'Students';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="course-index">
+<div class="student-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Course', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -25,10 +22,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
+//            'user_id',
+            'student_no',
 //            'school_id',
             'school_name',
-            'grade',
-//            'course:ntext',
+             'student_name',
+            // 'sex',
+             'grade',
+            // 'class_name',
+            // 'class_position',
+            // 'course_id',
+            // 'score_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

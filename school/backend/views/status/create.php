@@ -4,20 +4,18 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Grade */
+/* @var $model common\models\Status */
 
-$this->title = 'Create Grade';
-$this->params['breadcrumbs'][] = ['label' => 'Grades', 'url' => ['index']];
+$this->title = 'Create Status';
+$this->params['breadcrumbs'][] = ['label' => 'Statuses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="grade-create">
+<div class="status-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
-        'schools' => $schools,
-        'grades' => $grades,
     ]) ?>
 
 </div>

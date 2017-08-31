@@ -41,7 +41,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = User::find()->where(['is_manager'=>'0']);
 
         // add conditions that should always apply here
 

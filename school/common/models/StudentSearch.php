@@ -5,12 +5,12 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Course;
+use common\models\Student;
 
 /**
- * CSearch represents the model behind the search form about `common\models\Course`.
+ * StudentSearch represents the model behind the search form about `common\models\Student`.
  */
-class CSearch extends Course
+class StudentSearch extends Student
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class CSearch extends Course
     public function rules()
     {
         return [
-            [['id', 'school_id'], 'integer'],
-            [['grade', 'course','school_name'], 'safe'],
+            [['id', 'user_id', 'student_no', 'school_id', 'course_id', 'score_id'], 'integer'],
+            [['school_name', 'student_name', 'sex', 'grade', 'class_name', 'class_position'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class CSearch extends Course
      */
     public function search($params)
     {
-        $query = Course::find();
+        $query = Student::find();
 
         // add conditions that should always apply here
 
@@ -60,12 +60,19 @@ class CSearch extends Course
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'user_id' => $this->user_id,
+            'student_no' => $this->student_no,
             'school_id' => $this->school_id,
+            'course_id' => $this->course_id,
+            'score_id' => $this->score_id,
         ]);
 
-        $query->andFilterWhere(['like', 'grade', $this->grade])
-            ->andFilterWhere(['like', 'course', $this->course])
-            ->andFilterWhere(['like','school_name',$this->school_name]);
+        $query->andFilterWhere(['like', 'school_name', $this->school_name])
+            ->andFilterWhere(['like', 'student_name', $this->student_name])
+            ->andFilterWhere(['like', 'sex', $this->sex])
+            ->andFilterWhere(['like', 'grade', $this->grade])
+            ->andFilterWhere(['like', 'class_name', $this->class_name])
+            ->andFilterWhere(['like', 'class_position', $this->class_position]);
 
         return $dataProvider;
     }

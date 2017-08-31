@@ -8,8 +8,10 @@
 namespace backend\controllers;
 
 
+use common\models\Status;
 use common\models\User;
 use common\models\UserSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -36,8 +38,13 @@ class UsersController extends Controller{
     //     */
     public function actionView($id)
     {
+        $query = Status::find()->where(['user_id'=>$id]);
+        $dataProvider = new ActiveDataProvider([
+            'query'=> $query,
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
         ]);
     }
 

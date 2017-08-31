@@ -37,13 +37,14 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-lg-7">
             所有课程<br>
-            <?= Html::a('添加课程',['url','[]'],['class' => 'btn btn-primary'])?><br>
-            <?= $course?>
+            <?= Html::a('添加课程',"/course/update?id={$course['id']}",['class' => 'btn btn-primary'])?><br>
             <?php
                 if(!$course){
                     echo '暂无课程';
                 }else{
-
+                    $course_arr = unserialize($course['course']);
+//                    print_r($course['course']);
+                    print_r($course_arr);
                 }
             ?>
         </div>

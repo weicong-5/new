@@ -15,7 +15,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'school_id')->dropDownList($schools,['id'=>'list_schools']) ?>
 
-    <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
+    <?= Html::dropDownList('list_grades',null,$grades,['id'=>'list_grades','class'=>'form-control'])?>
+
+    <?= $form->field($model, 'grade')->textInput(['type'=>'hidden','id'=>'grade_name','maxlength' => true])->label(false)?>
 
     <?= $form->field($model, 'room')->textInput(['maxlength' => true]) ?>
 
@@ -32,15 +34,24 @@ use yii\widgets\ActiveForm;
 
 $script = <<<JS
     $(document).ready(function(){
-        var school_name = $('#school_name');
+        var school_name = $('#school_name'),grade_name=$('#grade_name');
         var school_list = $('#list_schools');
+        var grade_list = $('#list_grades')
         school_list.bind('change',function(){
-            var selected = $('#grade_schools option:selected');
+            var selected = $('#list_schools option:selected');
             if($(this).val() == 0){
                 return;
             }else{
                 //alert(selected.text());
                 school_name.val(selected.text());
+            }
+        });
+        grade_list.bind('change',function(){
+            var selected = $('#list_grades option:selected');
+            if($(this).val() == 0){
+                return;
+            }else{
+                grade_name.val(selected.text());
             }
         });
     });

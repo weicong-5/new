@@ -49,15 +49,6 @@ if(!Yii::$app->user->isGuest){
 }
 
 
-
-
-//$js = <<<JS
-// $(document).on('click','#select',function(){
-//    $('.modal-body').html({$username});
-// });
-//JS;
-
-
 ?>
 <div class="site-index">
 

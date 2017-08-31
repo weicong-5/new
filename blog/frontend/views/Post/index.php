@@ -103,6 +103,8 @@ if($session->isActive){
 
     echo "<p class='lead'>你当前浏览器的信息</p>";
     echo Enum::array2table(Enum::getBrowser(),true);
+    $arr = ['语文','数学','英语'];
+    echo Enum::array2table($arr);
     echo "IP地址：".Enum::userIP(false);
     ?>
     <div class="row">

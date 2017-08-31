@@ -2,26 +2,21 @@
 
 namespace backend\controllers;
 
-use common\models\Course;
-use common\models\School;
 use Yii;
-use common\models\Grade;
-use common\models\GradeSearch;
+use common\models\Status;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * GradeController implements the CRUD actions for Grade model.
+ * StatusController implements the CRUD actions for Status model.
  */
-class GradeController extends Controller
+class StatusController extends Controller
 {
     /**
      * @inheritdoc
      */
-
-
-
     public function behaviors()
     {
         return [
@@ -35,62 +30,52 @@ class GradeController extends Controller
     }
 
     /**
-     * Lists all Grade models.
+     * Lists all Status models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new GradeSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Status::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Grade model.
+     * Displays a single Status model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-        $course = Course::find()->where(['school_id'=>$model->school_id,'grade'=>$model->grade])->asArray()->one();
         return $this->render('view', [
-            'model' => $model,
-            'course' => $course,
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Grade model.
+     * Creates a new Status model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Grade();
-        $schools = array('0'=>'请选择');
-        $schools = array_merge($schools,School::getAllSchool());
-
-        $grades = array('0'=>'请选择');
-        $grades = array_merge($grades,Grade::getAllGrades());
+        $model = new Status();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'schools' => $schools,
-                'grades' => $grades,
             ]);
         }
     }
 
     /**
-     * Updates an existing Grade model.
+     * Updates an existing Status model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -98,24 +83,18 @@ class GradeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $schools = array('0'=>'请选择');
-        $schools = array_merge($schools,School::getAllSchool());
 
-        $grades = array('0'=>'请选择');
-        $grades = array_merge($grades,Grade::getAllGrades());
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'schools' => $schools,
-                'grades' => $grades,
             ]);
         }
     }
 
     /**
-     * Deletes an existing Grade model.
+     * Deletes an existing Status model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -128,15 +107,15 @@ class GradeController extends Controller
     }
 
     /**
-     * Finds the Grade model based on its primary key value.
+     * Finds the Status model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Grade the loaded model
+     * @return Status the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Grade::findOne($id)) !== null) {
+        if (($model = Status::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

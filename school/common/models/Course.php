@@ -11,6 +11,7 @@ use Yii;
  * @property integer $school_id
  * @property string $grade
  * @property string $course
+ * @property string $school_name
  */
 class Course extends \yii\db\ActiveRecord
 {
@@ -28,9 +29,10 @@ class Course extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['school_id', 'grade', 'course'], 'required'],
+            [['school_id', 'grade', 'school_name'], 'required'],
             [['school_id'], 'integer'],
-            [['grade', 'course'], 'string', 'max' => 255],
+            [['course'], 'string'],
+            [['grade', 'school_name'], 'string', 'max' => 255],
         ];
     }
 
@@ -44,6 +46,7 @@ class Course extends \yii\db\ActiveRecord
             'school_id' => 'School ID',
             'grade' => 'Grade',
             'course' => 'Course',
+            'school_name' => 'School Name',
         ];
     }
 }

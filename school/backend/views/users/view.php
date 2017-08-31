@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\bootstrap\Modal;
+use yii\widgets\Pjax;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
@@ -54,8 +57,74 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
         </div>
         <div class="col-lg-6">
+            <?php
+            Modal::begin([
+                'id' => 'select-modal',
+                'header' => '<h4 class="modal-title">选择身份</h4>',
+//                '<a href="#" class="btn btn-primary" data-dismiss="modal">确定</a>'
+                'footer' => Html::a('确定','#',['id'=>'sure','class'=>'btn btn-primary',])
+            ]);
+//            $select_data[] = '--选择身份--';
+            //这里的身份选择数组 可以到时候在用户身份活动对象中定义 以后修改就一个地方修改即可
+            $select_data = array('none'=>'--选择身份--','student'=>'学生','parent'=>'家长','teacher-staff'=>'教师职工');
+//            foreach($status_list as $item){
+//                $role_name = \backend\Modules\roles\models\Roles::getRoleNameById($item['role_id']);
+//                $name = \common\models\Student::getAttributeById('name',$item['status_id']);
+//                $select_data[] = "{$role_name}——{$name}";
+//            }
+
+            echo \yii\helpers\Html::dropDownList('select_status',[],$select_data,['id'=>'select_list','class'=>'form-control']);
+            echo \yii\helpers\Html::textInput('test',null,['id'=>'test']);
+            Modal::end();
+            ?>
             <h4>用户身份</h4>
+            <?php
+            echo \yii\helpers\Html::a('create','#',[
+            'id' => 'select',
+            'data-toggle' => 'modal',// 注意是modal 不是model
+            'data-target' => '#select-modal',
+            'class' => 'btn btn-success',
+            ]);
+            ?>
+                <?php Pjax::begin(); ?>
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+                        'status',
+                        'name',
+                        'school',
+                        ['class' => 'yii\grid\ActionColumn'],
+                    ],
+                    'layout'=>"{items}\n{pager}",
+                ]);
+                ?>
+                <?php Pjax::end(); ?>
+
         </div>
     </div>
 
 </div>
+
+<?php
+$script = <<< JS
+$(document).ready(function(){
+    var select_list = $('#select_list');
+    var test_text = $('#test');
+    var sure_button = $('#sure');
+    select_list.bind('change',function(){
+        var selected = $('#select_list option:selected');
+        if($(this).val() == 0){
+            return;
+        }else{
+            test_text.val(selected.val());
+            //var url = '/'+selected.val()+'create';
+            sure_button.attr('href','/'+selected.val()+'/create?user_id='+$model->id+'&status='+selected.text());
+        }
+    });
+});
+JS;
+
+$this->registerJs($script,yii\web\View::POS_LOAD);
+
+?>
