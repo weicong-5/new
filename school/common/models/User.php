@@ -86,7 +86,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'updated_at' => '更新时间',
             'last_login_at' => 'Last Login At',
             'status' => '身份',
-            'is_manager' => '是否为管理员',
+            'is_manager' => '管理员',
         ];
     }
 

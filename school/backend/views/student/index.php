@@ -7,12 +7,10 @@ use yii\widgets\Pjax;
 /* @var $searchModel common\models\StudentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Students';
+$this->title = '所有学生';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="student-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <?php Pjax::begin(); ?>    <?= GridView::widget([
@@ -25,8 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'user_id',
             'student_no',
 //            'school_id',
+            'student_name',
             'school_name',
-             'student_name',
+
             // 'sex',
              'grade',
             // 'class_name',

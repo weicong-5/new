@@ -11,6 +11,7 @@ use Yii;
  * @property integer $area_id
  * @property string $school_name
  * @property string $address
+ * @property string $district
  */
 class School extends \yii\db\ActiveRecord
 {
@@ -28,9 +29,9 @@ class School extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['area_id', 'school_name', 'address'], 'required'],
+            [['area_id', 'school_name', 'address', 'district'], 'required'],
             [['area_id'], 'integer'],
-            [['school_name', 'address'], 'string', 'max' => 255],
+            [['school_name', 'address', 'district'], 'string', 'max' => 255],
         ];
     }
 
@@ -44,6 +45,7 @@ class School extends \yii\db\ActiveRecord
             'area_id' => 'Area ID',
             'school_name' => 'School Name',
             'address' => 'Address',
+            'district' => 'District',
         ];
     }
 

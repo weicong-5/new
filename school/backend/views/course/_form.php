@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use \common\models\Grade;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Course */
@@ -12,9 +13,10 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'school_id')->dropDownList($schools,['id'=>'list_schools']) ?>
+    <?= $form->field($model, 'school_id')->dropDownList($schools,['id'=>'list_schools','disabled'=>$model->isNewRecord?false:true]) ?>
 
-    <?= Html::dropDownList('list_grades',null,$grades,['id'=>'list_grades','class'=>'form-control'])?>
+    <?= Html::label('年级','list_grades')?>
+    <?= Html::dropDownList('list_grades',Grade::getIndex($model->grade),$grades,['id'=>'list_grades','class'=>'form-control','disabled'=>$model->isNewRecord?false:true])?>
 
     <?= $form->field($model,'grade')->textInput(['type'=>'hidden','id'=>'grade_name','maxlength'=>'true'])->label(false) ?>
 

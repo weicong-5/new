@@ -12,11 +12,13 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'area_id')->dropDownList($area_data) ?>
+    <?= $form->field($model, 'area_id')->dropDownList($area_data,['id'=>'area_list']) ?>
 
     <?= $form->field($model, 'school_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'district')->textInput(['id'=>'district_text','type'=>'hidden','maxlength' => true])->label(false) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -25,3 +27,22 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php
+$script = <<< JS
+$(document).ready(function(){
+    var area_list = $('#area_list');
+    var district = $('#district_text');
+    area_list.bind('change',function(){
+        var selected = $('#area_list option:selected');
+        if($(this).val() == 0){
+            return;
+        }else{
+            district.val(selected.text().replace(/-/g,''));
+        }
+
+    });
+});
+JS;
+
+$this->registerJs($script,yii\web\View::POS_LOAD);
+?>

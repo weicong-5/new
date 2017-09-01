@@ -7,12 +7,10 @@ use yii\widgets\Pjax;
 /* @var $searchModel common\models\GradeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Grades';
+$this->title = '全部班级';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="grade-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
@@ -24,11 +22,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+//            'id',
 //            'school_id',
+            'school_name',
             'grade',
             'room',
-            'school_name',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use \common\models\Student;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Student */
@@ -24,12 +25,12 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'student_name')->textInput(['maxlength' => true]) ?>
 
     <?=Html::label('性别','sex_list')?>
-    <?=Html::dropDownList('sex_list',0,[0=>'男',1=>'女'],['id'=>'sex_list','class'=>'form-control'])?>
+    <?=Html::dropDownList('sex_list',Student::getSexIndex($model->sex),[0=>'男',1=>'女'],['id'=>'sex_list','class'=>'form-control'])?>
 
     <?= $form->field($model, 'sex')->textInput(['id'=>'sex','type'=>'hidden'])->label(false) ?>
 
     <?=Html::label('年级','grade_list')?>
-    <?=Html::dropDownList('grade_list',null,$grades,['id'=>'grade_list','class'=>'form-control'])?>
+    <?=Html::dropDownList('grade_list',Student::getSchoolIndex($model->grade,$grades),$grades,['id'=>'grade_list','class'=>'form-control'])?>
 
     <?= $form->field($model, 'grade')->textInput(['id'=>'grade_text','type'=>'hidden','maxlength' => true])->label(false)?>
 

@@ -10,7 +10,7 @@ $this->title = 'Create School';
 $this->params['breadcrumbs'][] = ['label' => 'Schools', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$area_data = \common\models\Area::getAll();
+
 ?>
 <div class="school-create">
 

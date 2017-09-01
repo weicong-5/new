@@ -11,13 +11,14 @@ use yii\grid\GridView;
 $userInfo = \common\models\User::find()->where(['id'=>$model->id])->one();
 
 $this->title = $model->username;
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '所有用户', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
     <div class="row">
         <div class="col-lg-6">
             <p>
+               <h4>用户信息</h4>
                 <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',
@@ -31,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
 //                    'id',
-                    'username',
+//                    'username',
                     'email:email',
                     [
                         'attribute' => 'updated_at',
@@ -94,7 +95,46 @@ $this->params['breadcrumbs'][] = $this->title;
                         'status',
                         'name',
                         'school',
-                        ['class' => 'yii\grid\ActionColumn'],
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'template' => '{status/view} {status/delete}',
+                            'buttons' => [
+//                                'status/delete' => function($url,$model,$key){
+//                                    $options = [
+//                                        'title' => '查看',
+//                                        'aria-label' => '查看',
+//                                        'data-pjax'=>'0',
+//                                    ];
+//                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>',$url,$options);
+//                                },
+                                'status/view' => function($url,$model,$key){
+                                    $options = [
+                                        'class' => 'btn btn-xs btn-primary',
+                                        'title' => '查看',
+                                        'aria-label' => '查看',
+                                        'data-pjax'=>'1',
+                                    ];
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',$url,$options);
+                                },
+                                'status/delete' => function($url,$model,$key){
+//                                    $options = [
+//                                        'title' => '查看',
+//                                        'aria-label' => '查看',
+//                                        'data-pjax'=>'0',
+//                                    ];
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>',$url,[
+                                        'class' => 'btn btn-xs btn-danger',
+                                        'title' => '删除',
+                                        'aria-label' => '删除',
+                                        'data-pjax'=>'1',
+                                        'data' => [
+                                            'confirm' => 'Are you sure you want to delete this item?',
+                                            'method' => 'post',
+                                        ]
+                                    ]);
+                                },
+                            ],
+                        ],
                     ],
                     'layout'=>"{items}\n{pager}",
                 ]);
@@ -108,6 +148,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 $script = <<< JS
+//选择身份不同 跳转到不同的创建身份页  控制器不同
 $(document).ready(function(){
     var select_list = $('#select_list');
     var test_text = $('#test');

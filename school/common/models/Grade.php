@@ -43,9 +43,9 @@ class Grade extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'school_id' => 'School',
-            'grade' => 'Grade',
-            'room' => 'Room',
-            'school_name' => 'School Name',
+            'grade' => '年级',
+            'room' => '班级',
+            'school_name' => '学校',
         ];
     }
 
@@ -67,5 +67,14 @@ class Grade extends \yii\db\ActiveRecord
             '11' => '高二',
             '12' => '高三',
         ];
+    }
+
+    /**
+     * @param $item
+     * @return mixed
+     * 根据年级得到索引ID
+     */
+    public static function getIndex($item){
+        return array_search($item,self::getAllGrades());
     }
 }

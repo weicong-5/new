@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Area;
 use common\models\Grade;
 use Yii;
 use common\models\School;
@@ -76,12 +77,14 @@ class SchoolsController extends Controller
     public function actionCreate()
     {
         $model = new School();
+        $area_data = Area::getAll();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'area_data' => $area_data,
             ]);
         }
     }
@@ -95,12 +98,14 @@ class SchoolsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $area_data = Area::getAll();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'area_data' => $area_data,
             ]);
         }
     }

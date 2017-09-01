@@ -6,13 +6,11 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Course */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
+$this->title = $model->school_name.' '.$model->grade;
+$this->params['breadcrumbs'][] = ['label' => '各学校各年级', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="course-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -28,9 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'school_id',
-            'grade',
+//            'id',
+//            'school_id',
+//            'grade',
 //            'course:ntext',
             [
                 'attribute' => 'course',

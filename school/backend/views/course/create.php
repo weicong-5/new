@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="course-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>课程设置</h1>
 
     <?= $this->render('_form', [
         'model' => $model,

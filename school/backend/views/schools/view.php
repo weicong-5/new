@@ -29,15 +29,16 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
-                    'id',
-                    'area_id',
+//                    'id',
+//                    'area_id',
                     'school_name',
                     'address',
+                    'district',
                 ],
             ]) ?>
         </div>
         <div class="col-lg-6">
-            <h6>所有班级</h6>
+            <h4>所有班级</h4>
             <?php Pjax::begin()?>
             <?=GridView::widget([
                 'dataProvider' => $dataProvider,

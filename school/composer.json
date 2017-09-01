@@ -24,7 +24,8 @@
         "dektrium/yii2-user": "0.9.*@dev",
         "bower-asset/adminlte": "~2.0",
 	"bower-asset/html5shiv": "~3.0",
-	"bower-asset/Font-Awesome": "*"
+	"bower-asset/Font-Awesome": "*",
+        "kartik-v/yii2-helpers": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

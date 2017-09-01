@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="school-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>所有学校</h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
@@ -25,7 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
-            'area_id',
+//            'area_id',
+            'district',
             'school_name',
             'address',
 

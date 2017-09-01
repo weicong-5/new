@@ -134,7 +134,7 @@ class CourseController extends Controller
                 echo "保存失败";
             }
         }else{
-            return $this->render('create',[
+            return $this->render('update',[
                 'model' => $model,
                 'schools' => $schools,
                 'grades' => $grades,

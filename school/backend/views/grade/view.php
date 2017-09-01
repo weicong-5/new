@@ -2,17 +2,18 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use \kartik\helpers\Enum;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Grade */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Grades', 'url' => ['index']];
+$this->title = $model->school_name.' '.$model->grade.' '.$model->room;
+$this->params['breadcrumbs'][] = ['label' => '全部班级', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="grade-view">
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <p>
                 <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a('Delete', ['delete', 'id' => $model->id], [
@@ -27,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
-                    'id',
+//                    'id',
 //            'school_id',
                     'grade',
                     'room',
@@ -35,16 +36,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]) ?>
         </div>
-        <div class="col-lg-7">
-            所有课程<br>
+        <div class="col-lg-8">
+            <h4>所有课程</h4>
             <?= Html::a('添加课程',"/course/update?id={$course['id']}",['class' => 'btn btn-primary'])?><br>
             <?php
                 if(!$course){
-                    echo '暂无课程';
+                    echo "<h4>暂无课程</h4>";
                 }else{
                     $course_arr = unserialize($course['course']);
 //                    print_r($course['course']);
-                    print_r($course_arr);
+//                    print_r($course_arr);
+                    echo Enum::array2table($course_arr);
                 }
             ?>
         </div>

@@ -43,9 +43,9 @@ class Course extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'school_id' => 'School ID',
+            'school_id' => '学校',
             'grade' => 'Grade',
-            'course' => 'Course',
+            'course' => '课程',
             'school_name' => 'School Name',
         ];
     }

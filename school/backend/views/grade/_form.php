@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'school_id')->dropDownList($schools,['id'=>'list_schools']) ?>
+    <?= $form->field($model, 'school_id')->dropDownList($schools,['id'=>'list_schools','readonly'=>$model->isNewRecord?false:true]) ?>
 
     <?= Html::dropDownList('list_grades',null,$grades,['id'=>'list_grades','class'=>'form-control'])?>
 

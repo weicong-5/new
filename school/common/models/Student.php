@@ -53,10 +53,10 @@ class Student extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'student_no' => '学号',
             'school_id' => 'School ID',
-            'school_name' => 'School Name',
+            'school_name' => '学校',
             'student_name' => '姓名',
-            'sex' => 'Sex',
-            'grade' => 'Grade',
+            'sex' => '性别',
+            'grade' => '年级',
             'class_name' => '班级',
             'class_position' => '班内职务',
             'course_id' => 'Course ID',
@@ -77,5 +77,13 @@ class Student extends \yii\db\ActiveRecord
         }else{
             return null;
         }
+    }
+
+    public static function getSexIndex($sex){
+        return array_search($sex,array(0=>'男',1=>'女'));
+    }
+
+    public static function getSchoolIndex($item,$arr){
+        return array_search($item,$arr);
     }
 }

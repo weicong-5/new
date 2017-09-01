@@ -7,12 +7,10 @@ use yii\widgets\Pjax;
 /* @var $searchModel common\models\CSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Courses';
+$this->title = '各学校各年级';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="course-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>

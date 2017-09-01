@@ -48,4 +48,21 @@ class Status extends \yii\db\ActiveRecord
             'school' => '学校',
         ];
     }
+
+    /**
+     * @param $user_id
+     * @return null 通过用户ID获取身份ID集合
+     */
+    public static function getStatusByUser($user_id){
+        $status=null;
+        $res = Status::find()->where(['user_id' => $user_id])->asArray()->all();
+        if($res){//如果存在身份
+//            foreach($res as $k =>$list){
+//                $status[$list['id']] = $list['status_id'];
+//            }
+            return $res;
+        }else{
+            return $status;
+        }
+    }
 }
