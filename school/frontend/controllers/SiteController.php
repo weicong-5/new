@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\models\User;
+use kartik\helpers\Enum;
 use Yii;
 use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
@@ -14,6 +15,7 @@ use yii\web\BadRequestHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\ykocomposer\controller\CoreController;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -75,6 +77,30 @@ class SiteController extends CoreController
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    //身份选择
+    public function actionChoose(){
+        if(Yii::$app->request->isAjax){
+            $data = Yii::$app->request->post();
+            $status = $data['status'];
+            $user_id = $data['user_id'];
+            $name = $data['name'];
+            $session = Yii::$app->session;
+            if(!$session->isActive){
+                $session->open();
+            }
+
+            $session->set('status',$status);
+            $session->set('user_id',$user_id);
+            $session->set('name',$name);
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+            return[
+                'status'=>$status,
+                'user_id'=>$user_id,
+                'name'=>$name,
+            ];
+        }
     }
 
     /**
@@ -216,5 +242,10 @@ class SiteController extends CoreController
 
     public function actionPersonal(){
         return $this->render('personal');
+    }
+
+
+    public function actionEat(){
+        return $this->render('eat');
     }
 }

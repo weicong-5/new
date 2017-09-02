@@ -5,70 +5,101 @@
 $this->title = 'My Yii Application';
 
 use \yii\bootstrap\Modal;
-use \yii\helpers\Html;
 use \common\models\Status;
-use \yii\helpers\Url;
+use \kartik\helpers\Html;
+
+$session = Yii::$app->session;
 
 if(!Yii::$app->user->isGuest){
     $uid =  Yii::$app->user->identity->id;
     $username = Yii::$app->user->identity->username;
 
 
-//    $status_list = \common\models\RelationUserStatus::getStatusByUser($uid);
     $status_list = Status::getStatusByUser($uid);
-//    print_r($status_list);
-//echo $form = \yii\widgets\ActiveForm::begin();
-//echo  \yii\helpers\Html::dropDownList('select-status',null,ArrayHelper::map($data,''))
     $select_data = null;
     Modal::begin([
         'id' => 'select-modal',
         'header' => '<h4 class="modal-title">选择身份</h4>',
-//        'footer' => '<a href="/site/index" class="btn btn-primary" id="sure">确定</a>',
-        'footer' => '<a href="#" class="btn btn-primary" id="sure">确定</a>',
+        'footer' => '<a href="#" id="sure" class="btn btn-primary" data-dismiss="modal">确定</a>',
     ]);
     if($status_list){
-//        Modal::begin([
-//            'id' => 'select-modal',
-//            'header' => '<h4 class="modal-title">选择身份</h4>',
-//            'footer' => '<a href="#" class="btn btn-primary" id="sure">确定</a>'
-//        ]);
         echo "<h3>欢迎您，{$username} </h3>";
-//        echo "<h3>欢迎您，{$uid} </h3>";
         $select_data[]='--选择身份--';
         foreach($status_list as $item){
             $select_data[] = "{$item['status']}——{$item['name']}";
         }
-        print_r($status_list);
     }else{
-//        Modal::begin([
-//            'id' => 'select-modal',
-//            'header' => '<h4 class="modal-title">选择身份</h4>',
-//            'footer' => '<a href="#" class="btn btn-primary disabled" data-dismiss="modal">确定</a>'
-//        ]);
         echo "<h3>欢迎您，{$username} </h3>";
         echo "<h3>欢迎您，{$uid} </h3>";
         $select_data[] = '暂无身份，请与管理员联系';
     }
-    echo \yii\helpers\Html::dropDownList('select_status',[],$select_data,['class'=>'form-control','id'=>'status_list']);
-    $requestUrl = Url::toRoute("/site/index");
+    echo Html::dropDownList('select_status',[],$select_data,['class'=>'form-control','id'=>'status_list','data'=>$status_list]);
     $js=<<< JS
-        $(document).on('click','#select',function(){
-            $.get("{$requestUrl}",{},
-                function(data){
-                    $('.body-content').html(data);
-                })
+       $(document).ready(function(){
+        var status = null,user_id = null,student_name=null;
+        var status_list = $('#status_list');
+        status_list.bind('change',function(){
+            var selected = $('#status_list option:selected');
+            if($(this).val() == 0){
+                $('#sure').removeAttr('data-dismiss');//如果没选择 则弹窗关不了 只能点右上角X 关闭
+            }else{
+                $('#sure').attr('data-dismiss','modal');
+                var item = $('#status_list').data()[selected.val()-1];
+                status = item['status'],user_id = item['user_id'],student_name = item['name'];
+                console.log(status+" "+user_id+" "+student_name);
+            }
         });
+        $('#sure').bind('click',function(){
+            var selected = $('#status_list option:selected');
+            if(selected.val() == 0){
+                $('#sure').removeAttr('data-dismiss');
+            }
+            $.ajax({
+                    url:"/site/choose", //在site控制器中的choose动作 将提交的数据存到session中
+                    data:{status:status,user_id:user_id,name:student_name},//是一个对象，连同请求一起发送到服务器的数据
+                    dataType:"json",//预期服务器返回的数据类型
+                    type:"post",
+                });
+        });
+       });
 JS;
     $this->registerJs($js);
 
     Modal::end();
+
 }
 
 
 ?>
 <div class="site-index">
-
     <div class="body-content">
+        <div class="row">
+            <div class="col-lg-3">
+                <?php
+                if(!Yii::$app->user->isGuest){
+                echo Html::a('切换身份'.Html::icon('random'),'#',[
+                'id' => 'select',
+                'data-toggle' => 'modal',// 注意是modal 不是model
+                'data-target' => '#select-modal',
+                'class' => 'list-group-item',
+                ]);
+                }
+                ?>
+                <a href="/site/eat" class="list-group-item">吃<?=Html::icon('cutlery')?></a>
+                <a href="#" class="list-group-item">喝<?=Html::icon('glass')?></a>
+                <a href="#" class="list-group-item">玩</a>
+                <a href="#" class="list-group-item">乐</a>
+                <a href="#" class="list-group-item">购物优惠</a>
+            </div>
+            <div class="col-lg-9">
+                <?php
+                    echo \kartik\helpers\Html::jumbotron(
+                        "<h2>尊敬的用户：{$username}</h2>".
+                        "<p>欢迎您来到旭衍生活圈</p>"
+                    );
+                ?>
+            </div>
+        </div>
         <?php
         if(!Yii::$app->user->isGuest){
             echo Html::a('select','#',[
