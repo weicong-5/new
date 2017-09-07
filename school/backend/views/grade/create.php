@@ -6,13 +6,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Grade */
 
-$this->title = 'Create Grade';
-$this->params['breadcrumbs'][] = ['label' => 'Grades', 'url' => ['index']];
+$this->title = '创建班级';
+$this->params['breadcrumbs'][] = ['label' => '全部班级', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="grade-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

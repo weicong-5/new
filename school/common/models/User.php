@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
+use yii\base\NotSupportedException;
 
 /**
  * This is the model class for table "user".
@@ -34,6 +35,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     const STATUS_ACTIVE = 1;
 
     const IS_USER = 0;
+    const IS_MANAGER = 1;
 
     /**
      * @inheritdoc
@@ -56,14 +58,16 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'email', 'password_hash', 'auth_key', 'created_at', 'updated_at'], 'required'],
-            [['confirmed_at', 'blocked_at', 'created_at', 'updated_at', 'last_login_at', 'status', 'is_manager'], 'integer'],
-            [['username', 'email', 'unconfirmed_email'], 'string', 'max' => 255],
+//            [['username', 'email', 'password_hash', 'auth_key', 'created_at', 'updated_at'], 'required'],
+//            [['confirmed_at', 'blocked_at', 'created_at', 'updated_at', 'last_login_at', 'status', 'is_manager'], 'integer'],
+//            [['username', 'email', 'unconfirmed_email'], 'string', 'max' => 255],
             [['password_hash'], 'string', 'max' => 60],
             [['auth_key'], 'string', 'max' => 32],
-            [['registration_ip'], 'string', 'max' => 45],
+//            [['registration_ip'], 'string', 'max' => 45],
             [['username'], 'unique'],
             [['email'], 'unique'],
+            [['status'],'default','value'=>self::STATUS_ACTIVE],
+            [['is_manager'],'default','value'=>self::IS_USER],
         ];
     }
 
@@ -84,7 +88,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'registration_ip' => 'Registration Ip',
             'created_at' => '生成时间',
             'updated_at' => '更新时间',
-            'last_login_at' => 'Last Login At',
+            'last_login_at' => '最后一次登录时间',
             'status' => '身份',
             'is_manager' => '管理员',
         ];
@@ -127,12 +131,16 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Finds user by username
+     * Finds user by username 通过用户名找到用户
      * @param $username
      * @return static
      */
     public static function findByUserName($username){
         return static::findOne(['username' => $username,'status' => self::STATUS_ACTIVE,'is_manager' => self::IS_USER]);
+    }
+
+    public static function findManagerByUserName($username){
+        return static::findOne(['username' => $username,'status' => self::STATUS_ACTIVE,'is_manager' => self::IS_MANAGER]);
     }
 
     public function getId(){

@@ -81,7 +81,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <h4>用户身份</h4>
             <?php
             echo \yii\helpers\Html::a('create','#',[
-            'id' => 'select',
             'data-toggle' => 'modal',// 注意是modal 不是model
             'data-target' => '#select-modal',
             'class' => 'btn btn-success',
@@ -148,7 +147,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 $script = <<< JS
-//选择身份不同 跳转到不同的创建身份页  控制器不同
+//选择创建的身份不同 跳转到不同的创建身份页  控制器不同
 $(document).ready(function(){
     var select_list = $('#select_list');
     var test_text = $('#test');
@@ -159,7 +158,6 @@ $(document).ready(function(){
             return;
         }else{
             test_text.val(selected.val());
-            //var url = '/'+selected.val()+'create';
             sure_button.attr('href','/'+selected.val()+'/create?user_id='+$model->id+'&status='+selected.text());
         }
     });

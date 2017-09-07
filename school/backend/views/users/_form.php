@@ -16,7 +16,11 @@ $array_isManager = array(0=>'否',1=>'是');
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true,'readonly'=>true]) ?>
+    <?= $form->field($model, 'username')->textInput(['maxlength' => true,'readonly'=>$model->isNewRecord ? false:true]) ?>
+
+    <?php if($model->isNewRecord):?>
+        <?= $form->field($model,'password_hash')->passwordInput(['maxlength'=>true]) ?>
+    <?php endif;?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 

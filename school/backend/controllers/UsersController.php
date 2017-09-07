@@ -11,6 +11,7 @@ namespace backend\controllers;
 use common\models\Status;
 use common\models\User;
 use common\models\UserSearch;
+use frontend\models\SignupForm;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -53,17 +54,36 @@ class UsersController extends Controller{
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+//    public function actionCreate()
+//    {
+//        $model = new User();
+//
+//        if ($model->load(\Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('create', [
+//                'model' => $model,
+//            ]);
+//        }
+//    }
     public function actionCreate()
     {
-        $model = new User();
+        $model = new SignupForm();
 
-        if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if ($model->load(\Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                    $searchModel = new UserSearch();
+                    $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
+                    return $this->render('index',[
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                    ]);
+            }
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**

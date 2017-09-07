@@ -161,7 +161,7 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
                                     <?php echo Html::a(Yii::t('backend', 'Profile'),Yii::$app->urlManagerFrontend->createUrl('/user/settings/profile'), ['class'=>'btn btn-default btn-flat']) ?>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="/site/logout" class="btn btn-default btn-flat">Sign out</a>
                                 </div>
                             </li>
                         </ul>
@@ -289,6 +289,24 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
                         'options' => ['class' => 'treeview'],
                         'items' =>[
                             ['label'=>'学生列表', 'url'=>['/student/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+//                            ['label'=>'课程列表', 'url'=>['/course/index'],'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+//                            [
+//                                'label'=>Yii::t('backend', 'Users'),
+//                                'icon'=>'<i class="fa fa-users"></i>',
+//                                'url'=>['/user/admin/index'],
+//                                'visible'=>Yii::$app->user->can('/user/admin/index')
+//                            ]
+//                            ['label' => '角色列表', 'url'=>['/users/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+
+                        ]
+                    ],
+                    [
+                        'label' => '教师管理',
+                        'url' => '#',
+                        'icon' => '<i class="fa fa-edit"></i>',
+                        'options' => ['class' => 'treeview'],
+                        'items' =>[
+                            ['label'=>'教职工列表', 'url'=>['/teacher-staff/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
 //                            ['label'=>'课程列表', 'url'=>['/course/index'],'icon'=>'<i class="fa fa-angle-double-right"></i>'],
 //                            [
 //                                'label'=>Yii::t('backend', 'Users'),

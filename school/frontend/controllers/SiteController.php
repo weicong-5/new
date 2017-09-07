@@ -22,6 +22,8 @@ use yii\web\Response;
  */
 class SiteController extends CoreController
 {
+    public $layout = 'site_main';
+
     /**
      * @inheritdoc
      */
@@ -47,7 +49,7 @@ class SiteController extends CoreController
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['post','get'],
                 ],
             ],
         ];
@@ -86,6 +88,7 @@ class SiteController extends CoreController
             $status = $data['status'];
             $user_id = $data['user_id'];
             $name = $data['name'];
+            $selectIndex = $data['selectIndex'];
             $session = Yii::$app->session;
             if(!$session->isActive){
                 $session->open();
@@ -94,6 +97,7 @@ class SiteController extends CoreController
             $session->set('status',$status);
             $session->set('user_id',$user_id);
             $session->set('name',$name);
+            $session->set('selectIndex',$selectIndex);
             \Yii::$app->response->format = Response::FORMAT_JSON;
             return[
                 'status'=>$status,
@@ -240,11 +244,18 @@ class SiteController extends CoreController
         ]);
     }
 
+    /**
+     * 前往用户资料
+     * @return string
+     */
     public function actionPersonal(){
         return $this->render('personal');
     }
 
-
+    /**
+     * 生活圈 美食专栏
+     * @return string
+     */
     public function actionEat(){
         return $this->render('eat');
     }

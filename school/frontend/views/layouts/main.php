@@ -36,14 +36,14 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => Yii::t('frontend','Home'), 'url' => ['/site/index']],
-        ['label' => Yii::t('frontend','Student'), 'url' => ['/status/student-dir']],
-        ['label' => Yii::t('frontend','Teacher'), 'url' => ['/status/teacher-dir']],
-        ['label' => Yii::t('frontend','家长专栏'), 'url' => ['/status/#']],
+        ['label' => Yii::t('frontend','Student'), 'url' => ['/status/student-index']],
+        ['label' => Yii::t('frontend','Teacher'), 'url' => ['/status/teacher-index']],
+        ['label' => Yii::t('frontend','家长专栏'), 'url' => ['/status/parent-index']],
 //        ['label' => Yii::t('frontend','About'), 'url' => ['/site/about']],
 //        ['label' => Yii::t('frontend','Contact'), 'url' => ['/site/contact']],
     ];
     if (Yii::$app->user->isGuest) {
-//        $menuItems[] = ['label' => Yii::t('frontend','Signup'), 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => Yii::t('frontend','Signup'), 'url' => ['/site/signup']];
         $menuItems[] = ['label' => Yii::t('frontend','Login'), 'url' => ['/site/login']];
     } else {
         $menuItems[] =

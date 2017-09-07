@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\Student;
+use common\models\TeacherStaff;
 use Yii;
 use common\models\Status;
 use yii\data\ActiveDataProvider;
@@ -14,6 +16,8 @@ use yii\filters\VerbFilter;
  */
 class StatusController extends Controller
 {
+    //定义事件
+    const EVENT_AFTER_DELETE = '_eventAfterDelete';//删除之后的事件
     /**
      * @inheritdoc
      */
@@ -23,7 +27,7 @@ class StatusController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['GET'],
+                    'delete' => ['POST'],
                 ],
             ],
         ];
@@ -101,9 +105,12 @@ class StatusController extends Controller
      */
     public function actionDelete($id)
     {
+        $data = $this->findModel($id);
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $this->_eventAfterDelete($data);
+//        $uid=$this->getUidById($id);
+//        $uid = $this->getStatusById($id)['user_id'];
+        return $this->redirect(['users/view','id'=>$data->user_id]);
     }
 
     /**
@@ -120,5 +127,40 @@ class StatusController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function _eventAfterDelete($data){
+        $this->on(self::EVENT_AFTER_DELETE,[$this,'_eventUnBind'],$data);
+        $this->trigger(self::EVENT_AFTER_DELETE);
+    }
+
+    public function _eventUnBind($event){
+        switch($event->data['status']){
+            case '学生';
+                $res = Student::find()->where(['user_id'=>$event->data['user_id'],'student_name'=>$event->data['name']])->one();
+                if($res !== null && !$res->delete()){
+                    echo '删除用户身份关联关系失败';
+                }
+                break;
+            case '校长':
+            case '班主任':
+            case '科任老师':
+                $res = TeacherStaff::find()->where(['user_id'=>$event->data['user_id'],'name'=>$event->data['name']])->one();
+                if($res !== null && !$res->delete()){
+                    echo '删除用户身份关联关系失败';
+                 }
+                break;
+            default:
+                break;
+        }
+    }
+
+    //根据id 获取身份信息中的uid
+    public function getUidById($id){
+        return Status::find()->where(['id'=>$id])->select('user_id');
+    }
+
+    public function getStatusById($id){
+        return Status::find()->where(['id'=>$id])->asArray()->one();
     }
 }

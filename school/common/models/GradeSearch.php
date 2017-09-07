@@ -41,12 +41,16 @@ class GradeSearch extends Grade
      */
     public function search($params)
     {
-        $query = Grade::find();
+        //在此修改 使其按照XXX 排序
+        $query = Grade::find()->orderBy('grade');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,//设置分页
+            ],
         ]);
 
         $this->load($params);

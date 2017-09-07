@@ -62,6 +62,16 @@ class LoginForm extends Model
         }
     }
 
+    //后台管理员登录
+    public function login2()
+    {
+        if ($this->validate()) {
+            return Yii::$app->user->login($this->getManager(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Finds user by [[username]]
      *
@@ -72,7 +82,14 @@ class LoginForm extends Model
         if ($this->_user === null) {
             $this->_user = User::findByUsername($this->username);
         }
+        return $this->_user;
+    }
 
+    //管理员
+    protected function getManager(){
+        if($this->_user == null){
+            $this->_user = User::findManagerByUserName($this->username);
+        }
         return $this->_user;
     }
 }

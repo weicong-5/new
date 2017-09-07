@@ -22,6 +22,7 @@ class StudentController extends Controller
 
     //定义事件
     const EVENT_AFTER_CREATE = 'eventAfterCreate';//创建之后的事件
+    const EVENT_AFTER_DELETE = 'eventAfterDelete';
     /**
      * @inheritdoc
      */
@@ -75,26 +76,30 @@ class StudentController extends Controller
     {
         $model = new Student();
         $model->setAttribute('user_id', $user_id);
-        $schools = array('0'=>'请选择');
-        $schools = array_merge($schools,School::getAllSchool());
+        $selects = array('0'=>'请选择');
+        $schools = array_merge($selects,School::getAllSchool());
 
-        $grades = array('0'=>'请选择');
-        $grades = array_merge($grades,Grade::getAllGrades());
+        $grades = array_merge($selects,Grade::getAllGrades());
 
         if($model->load(Yii::$app->request->post())) {
             //根据学校id和年级找到课程id  插入student表中的courseID
             $course = Course::find()->where(['school_id' => $model->school_id, 'grade' => $model->grade])->asArray()->one();
             if ($course) {
-                $model->setAttribute('course_id', $course['id']);
+                $model->setAttribute('course_id', $course['id']);//如果有课程id 即跟随数据一起插入存储
             }
 
             if($model->validate() && $model->save()){
                 $data = $model->getAttributes();
                 $data['status'] = $status;
                 $this->_eventAfterCreate($data);
-                return $this->redirect(['view','id'=>$model->id]);
+                return $this->redirect(['users/view','id'=>$model->user_id]);
             }else{
-                echo '保存失败';
+                Yii::$app->getSession()->setFlash('error','学生角色创建失败');
+                return $this->render('create',[
+                    'model'=>$model,
+                    'schools'=>$schools,
+                    'grades'=>$grades,
+                ]);
             }
         }else{
             return $this->render('create',[
@@ -130,7 +135,12 @@ class StudentController extends Controller
             if($model->validate() && $model->save()){
                 return $this->redirect(['view','id'=>$model->id]);
             }else{
-                echo '保存失败';
+                Yii::$app->getSession()->setFlash('error','学生信息修改失败');
+                return $this->render('update',[
+                    'model'=>$model,
+                    'schools'=>$schools,
+                    'grades'=>$grades,
+                ]);
             }
         }else{
             return $this->render('update',[
@@ -149,8 +159,9 @@ class StudentController extends Controller
      */
     public function actionDelete($id)
     {
+        $data = $this->findModel($id);
         $this->findModel($id)->delete();
-
+        $this->_eventAfterDelete($data);
         return $this->redirect(['index']);
     }
 
@@ -179,6 +190,11 @@ class StudentController extends Controller
         $this->trigger(self::EVENT_AFTER_CREATE);
     }
 
+    public function _eventAfterDelete($data){
+        $this->on(self::EVENT_AFTER_DELETE,[$this,'_eventUnBindStatus'],$data);
+        $this->trigger(self::EVENT_AFTER_DELETE);
+    }
+
     public function _eventBindStatus($event){
         $status = new Status();
         $status->user_id = $event->data['user_id'];
@@ -190,5 +206,12 @@ class StudentController extends Controller
             throw new Exception('保存用户身份关联关系失败');
         }
         return $status->id;
+    }
+
+    public function _eventUnBindStatus($event){
+        $res = Status::find()->where(['user_id'=>$event->data['user_id'],'name'=>$event->data['student_name']])->one();
+        if($res != null && !$res->delete()){
+            echo '删除用户身份关联关系失败';
+        }
     }
 }

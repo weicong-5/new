@@ -36,6 +36,7 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            ['student_no','unique','targetClass'=>'\common\models\Student','message'=>'该学号已经存在'],
             [['user_id', 'student_no', 'school_id', 'school_name', 'student_name', 'grade', 'class_name'], 'required'],
             [['user_id', 'student_no', 'school_id', 'course_id', 'score_id'], 'integer'],
             [['school_name', 'student_name', 'grade', 'class_name', 'class_position'], 'string', 'max' => 255],

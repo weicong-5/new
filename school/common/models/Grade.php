@@ -42,7 +42,7 @@ class Grade extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'school_id' => 'School',
+            'school_id' => '学校',
             'grade' => '年级',
             'room' => '班级',
             'school_name' => '学校',

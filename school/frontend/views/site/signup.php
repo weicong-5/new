@@ -9,6 +9,8 @@ use yii\bootstrap\ActiveForm;
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->context->layout = 'main';
 ?>
 <div class="site-signup">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -21,9 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-                <?= $form->field($model, 'email') ?>
+                <?= $form->field($model, 'email')->textInput(['placeholder'=>'请输入合法的邮箱']) ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+                <?= $form->field($model, 'password')->passwordInput(['placeholder'=>'请输入密码']) ?>
 
 
 
