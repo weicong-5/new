@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'student_id')->textInput(['type'=>'hidden'])->label(false) ?>
 
     <?=Html::label('科目','subject_list')?>
-    <?=Html::dropDownList('subject_list',0,$courses_arr,['class'=>'form-control','id'=>'subject_list'])?>
+    <?=Html::dropDownList('subject_list',array_search($model->subject,$courses_arr),$courses_arr,['class'=>'form-control','id'=>'subject_list'])?>
 
     <?= $form->field($model, 'subject')->textInput(['maxlength' => true,'id'=>'subject_text','type'=>'hidden'])->label(false)?>
 
@@ -29,14 +29,21 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'class')->textInput(['maxlength' => true,'type'=>'hidden'])->label(false) ?>
 
+    <?php //对备注字段进行操作 取出考试类型和次数
+    $type = $model->isNewRecord?'单元考':substr($model->comment,strpos($model->comment,'次')+3);
+    $pattern = '/\d+/';
+    preg_match($pattern,$model->comment,$times);
+
+    ?>
+
     <div class="form-inline">
         <div class="form-group">
             <?=Html::label('考试类型','type_select')?>
-            <?=Html::radioList('type_select','单元考',array('单元考'=>'单元考','期中考'=>'期中考','期末考'=>'期末考'),['class'=>'checkbox','id'=>'type_select'])?>
+            <?=Html::radioList('type_select',$type,array('单元考'=>'单元考','期中考'=>'期中考','期末考'=>'期末考'),['class'=>'checkbox','id'=>'type_select'])?>
         </div>
         <div class="form-group">
             <?=Html::label('第几次','times_text')?>
-            <?=Html::textInput('times_text',null,['id'=>'times_text','class'=>'form-control','placeholder'=>'第几次某类型考试'])?>
+            <?=Html::textInput('times_text',$model->isNewRecord ?null:$times[0],['id'=>'times_text','class'=>'form-control','placeholder'=>'第几次某类型考试'])?>
         </div>
     </div>
 
@@ -76,7 +83,7 @@ $(document).ready(function(){
     });
     times_text.bind('keydown',function(e){
         var code = parseInt(e.keyCode);
-        if(code>=96 && code<=105 || code>=48 && code<=57 || code==8){
+        if(code>=96 && code<=105 || code>=48 && code<=57 || code==8){//code=8 是Backspace
             return true;
         }else{
             return false;
@@ -97,7 +104,7 @@ $(document).ready(function(){
     //验证分数输入的有效性
     score.bind('keydown',function(e){
         var code = parseInt(e.keyCode);
-        if(code>=96 && code<=105 || code>=48 && code<=57 || code==8){
+        if(code>=96 && code<=105 || code>=48 && code<=57 || code==8 || code==110){
             return true;
         }else{
             return false;

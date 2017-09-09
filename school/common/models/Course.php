@@ -49,4 +49,24 @@ class Course extends \yii\db\ActiveRecord
             'school_name' => 'School Name',
         ];
     }
+
+    //获取所有预设好的课程
+    public static function getAllCourse(){
+        return array(
+            0=>'请选择',
+            1=>'语文',
+            2=>'数学',
+            3=>'英语',
+            4=>'政治',
+            5=>'历史',
+            6=>'地理',
+            7=>'物理',
+            8=>'化学',
+            9=>'生物',
+            10=>'体育',
+            11=>'计算机',
+            12=>'科学与自然',
+            13=>'思想品德'
+        );
+    }
 }

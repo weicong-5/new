@@ -5,7 +5,6 @@ namespace backend\controllers;
 use common\models\Grade;
 use common\models\School;
 use common\models\Status;
-use common\widgets\Alert;
 use Yii;
 use common\models\TeacherStaff;
 use common\models\TeacherStaffSearch;
@@ -91,6 +90,11 @@ class TeacherStaffController extends Controller
 //            ]);
 //        }
         if($model->load(Yii::$app->request->post())){
+            $teach_class = $model->getAttribute('teach_class');
+            if(!empty($teach_class)){
+                $class_array = explode(" ",trim($teach_class));
+                $model->setAttribute('teach_class',serialize($class_array));
+            }
             if($model->validate() && $model->save()){
                 $data = $model->getAttributes();
                 $data['status'] = $status;
@@ -133,6 +137,11 @@ class TeacherStaffController extends Controller
         $grades = array_merge($selects,Grade::getAllGrades());
 
         if ($model->load(Yii::$app->request->post())) {
+            $teach_class = $model->getAttribute('teach_class');
+            if(!empty($teach_class)){
+                $class_array = explode(" ",trim($teach_class));
+                $model->setAttribute('teach_class',serialize($class_array));
+            }
             if ($model->validate() && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {

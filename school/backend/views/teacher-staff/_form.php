@@ -2,8 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use common\models\TeacherStaff;
 
+use common\models\TeacherStaff;
+use common\models\Course;
 /* @var $this yii\web\View */
 /* @var $model common\models\TeacherStaff */
 /* @var $form yii\widgets\ActiveForm */
@@ -51,6 +52,18 @@ use common\models\TeacherStaff;
     <?=Html::label('任班主任所在班级','headteacher_class',['id'=>'class_label','class'=>'hidden'])?>
     <?= $form->field($model, 'headteacher_class')->textInput(['maxlength' => true,'id'=>'headteacher_class','class'=>'hidden form-control'])->label(false) ?>
 
+    <?=Html::label('所教科目','subject_list',['id'=>'subject_label','class'=>'hidden'])?>
+    <?=Html::dropDownList('subject_list',0,Course::getAllCourse(),['id'=>'subject_list','class'=>'hidden form-control'])?>
+    <?=$form->field($model,'subject')->textInput(['maxlength'=>true,'id'=>'subject_text','class'=>'hidden form-control'])->label(false)?>
+
+    <?=Html::label('所教年级','teach_grade_list',['id'=>'teach_grade_label','class'=>'hidden'])?>
+    <?=Html::dropDownList('teach_grade_list',0,$grades,['id'=>'teach_grade_list','class'=>'form-control hidden'])?>
+
+    <?= $form->field($model, 'teach_grade')->textInput(['maxlength' => true,'id'=>'teach_grade','type'=>'hidden'])->label(false) ?>
+
+    <?=Html::label('所教班级(班级之间以空格隔开)','teach_class',['id'=>'teach_class_label','class'=>'hidden'])?>
+    <?=$form->field($model, 'teach_class')->textarea(['id'=>'teach_class','class'=>'form-control hidden'])->label(false)?>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
@@ -66,9 +79,19 @@ $(document).ready(function(){
     var staff_type_text = $('#staff_type_text'),sex = $('#sex'),political_status_text = $('#political_status_text'),school_name = $('#school_name');
     var grade_label = $('#grade_label'),grade_list = $('#grade_list'),class_label = $('#class_label');
     var headteacher_grade = $('#headteacher_grade'),headteacher_class = $('#headteacher_class');
+    var subject_list = $('#subject_list'),subject_text = $('#subject_text'),subject_label = $('#subject_label');
+    var teach_grade_list = $('#teach_grade_list'),teach_grade = $('#teach_grade'),teach_grade_label = $('#teach_grade_label');
+    var teach_class_label = $('#teach_class_label'),teach_class = $('#teach_class');
     staff_type_list.bind('change',function(){
         var selected = $('#staff_type_list option:selected');
         if($(this).val() == 0){
+            staff_type_text.val("");
+            grade_label.addClass('hidden');
+            grade_list.addClass('hidden');
+            class_label.addClass('hidden');
+            headteacher_class.addClass('hidden');
+            subject_label.addClass('hidden');
+            subject_list.addClass('hidden');
             return false;
         }else if($(this).val() == 2){
             staff_type_text.val(selected.text());
@@ -76,12 +99,36 @@ $(document).ready(function(){
             grade_list.removeClass('hidden');
             class_label.removeClass('hidden');
             headteacher_class.removeClass('hidden');
+            subject_label.removeClass('hidden');
+            subject_list.removeClass('hidden');
+            teach_grade_list.removeClass('hidden');
+            teach_grade_label.removeClass('hidden');
+            teach_class_label.removeClass('hidden');
+            teach_class.removeClass('hidden');
+        }else if($(this).val() == 3){//科任老师
+            staff_type_text.val(selected.text());
+            subject_label.removeClass('hidden');
+            subject_list.removeClass('hidden');
+            teach_grade_list.removeClass('hidden');
+            teach_grade_label.removeClass('hidden');
+            teach_class_label.removeClass('hidden');
+            teach_class.removeClass('hidden');
+            grade_label.addClass('hidden');
+            grade_list.addClass('hidden');
+            class_label.addClass('hidden');
+            headteacher_class.addClass('hidden');
         }else{
             staff_type_text.val(selected.text());
             grade_label.addClass('hidden');
             grade_list.addClass('hidden');
             class_label.addClass('hidden');
             headteacher_class.addClass('hidden');
+            subject_label.addClass('hidden');
+            subject_list.addClass('hidden');
+            teach_grade_list.addClass('hidden');
+            teach_grade_label.addClass('hidden');
+            teach_class_label.addClass('hidden');
+            teach_class.addClass('hidden');
         }
     });
     sex.val('0');
@@ -92,6 +139,7 @@ $(document).ready(function(){
     political_status_list.bind('change',function(){
         var selected = $('#political_status_list option:selected');
         if($(this).val() == 0){
+            political_status_text.val("");
             return false;
         }else{
             political_status_text.val(selected.text());
@@ -100,7 +148,8 @@ $(document).ready(function(){
     school_list.bind('change',function(){
         var selected = $('#school_list option:selected');
         if($(this).val() == 0){
-            return;
+            school_name.val("");
+            return false;
         }else{
             school_name.val(selected.text());
         }
@@ -108,9 +157,28 @@ $(document).ready(function(){
     grade_list.bind('change',function(){
         var selected = $('#grade_list option:selected');
         if($(this).val() == 0){
-            return;
+            headteacher_grade.val("");
+            return false;
         }else{
             headteacher_grade.val(selected.text());
+        }
+    });
+    subject_list.bind('change',function(){
+        var selected = $('#subject_list option:selected');
+        if($(this).val() == 0){
+            subject_text.val("");
+            return false;
+        }else{
+            subject_text.val(selected.text());
+        }
+    });
+    teach_grade_list.bind('change',function(){
+        var selected = $('#teach_grade_list option:selected');
+        if($(this).val() == 0){
+            teach_grade.val("");
+            return false;
+        }else{
+            teach_grade.val(selected.text());
         }
     });
 });
@@ -118,4 +186,4 @@ JS;
 
 $this->registerJs($script,yii\web\View::POS_LOAD);
 
-?>>
+?>

@@ -83,15 +83,6 @@ JS;
             <div class="col-lg-3">
                 <?php
                 if(!Yii::$app->user->isGuest):
-//                {
-//                    echo Html::a('切换身份'.Html::icon('random'),'#',[
-//                        'id' => 'select',
-//                        'data-toggle' => 'modal',// 注意是modal 不是model
-//                        'data-target' => '#select-modal',
-//                        'class' => 'list-group-item',
-//                    ]);
-
-//                }
                 ?>
                     <a href="#" class="list-group-item" id="select" data-toggle="modal" data-target="#select-modal"><i class="glyphicon glyphicon-random pull-right"></i>切换身份</a>
                 <?php endif;?>

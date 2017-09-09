@@ -39,9 +39,13 @@ class StudentSearch extends Student
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$sql=null)
     {
-        $query = Student::find();
+        if($sql){
+            $query = $sql;
+        }else{
+            $query = Student::find();
+        }
 
         // add conditions that should always apply here
 

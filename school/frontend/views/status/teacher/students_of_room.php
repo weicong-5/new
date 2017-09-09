@@ -11,25 +11,41 @@ use yii\data\ActiveDataProvider;
 use yii\widgets\Pjax;
 use yii\grid\GridView;
 use kartik\helpers\Html;
+use yii\widgets\Breadcrumbs;
 
 //echo $grade."   ".$room."   ".$school;
 $query = Student::find()->where(['grade'=>$grade,'class_name'=>$room,'school_name'=>$school]);
-$dataProvider = new ActiveDataProvider([
-    'query' => $query,
-    'pagination' => [
-        'pagesize' => 10,
-    ],
-//    'sort'=> [
-//        'defaultOrder' => [
-//
-//        ],
-//    ]
-]);
+//$dataProvider = new ActiveDataProvider([
+//    'query' => $query,
+//    'pagination' => [
+//        'pagesize' => 10,
+//    ],
+////    'sort'=> [
+////        'defaultOrder' => [
+////
+////        ],
+////    ]
+//]);
+$dataProvider = $searchModel->search(Yii::$app->request->queryParams,$query);
 ?>
-
 <?php Pjax::begin(); ?>
+    <?php
+    echo Breadcrumbs::widget([
+        'homeLink' => ['label'=>'首页','url'=>['site/index']],
+        'itemTemplate' => '<li>{link}</li>',
+        'links' => [
+            [
+                'label' => '学生成绩',
+                'url' => ['teacher-modify-score'],
+            ],
+            '本班学生列表',
+        ]
+    ]);
+    ?>
+    <h2>本班学生列表</h2>
     <?= GridView::widget([
     'dataProvider' => $dataProvider,
+        'filterModel'=>$searchModel,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         'student_no',

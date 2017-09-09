@@ -42,6 +42,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'school_name',
             'office_room',
             'office_phone',
+//            'headteacher_grade',
+//            'headteacher_class',
+//            'subject',
+//            'teach_grade',
+//            'teach_class',
             [
                 'attribute'=>'headteacher_grade',
                 'value'=>function($data){

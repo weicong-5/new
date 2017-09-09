@@ -8,6 +8,8 @@
 use kartik\helpers\Enum;
 use yii\bootstrap\Alert;
 use kartik\helpers\Html;
+use yii\widgets\Breadcrumbs;
+
 use common\models\Student;
 
 $session = Yii::$app->session;
@@ -28,7 +30,16 @@ if(Enum::isEmpty($status) || $status !== '学生'){
     ]);
 }else{
     ?>
-
+    <?php
+    echo Breadcrumbs::widget([
+        'homeLink' => ['label'=>'首页','url'=>['site/index']],
+        'itemTemplate' => '<li>{link}</li>',
+        'links' => [
+            '本班学生',
+        ]
+    ]);
+    ?>
+    <h1>学生个人信息</h1>
     <?php
     echo Html::jumbotron(
         "<h4>学生个人信息</h4>".

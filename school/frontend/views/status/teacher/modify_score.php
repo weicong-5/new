@@ -14,7 +14,7 @@ use kartik\helpers\Html;
 use yii\data\ActiveDataProvider;
 use yii\widgets\Pjax;
 use yii\grid\GridView;
-
+use yii\widgets\Breadcrumbs;
 
 
 $session = Yii::$app->session;
@@ -41,8 +41,23 @@ switch($teacher_info['staff_type']){
     case '级长':
         break;
     case '班主任':
+        $class_arr = unserialize($teacher_info['teach_class']);//所教的班级数组 如[201,202,203..]
+        $teach_subject = $teacher_info['subject'];//所教科目
+        $session->set('subject',$teach_subject);
+//        $session->set('headteacher','yes');
+        $query = Grade::find()->where(['school_name'=>$teacher_info['school_name'],'room'=>$class_arr]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
         break;
     case '科任老师':
+        $class_arr = unserialize($teacher_info['teach_class']);//所教的班级数组 如[201,202,203..]
+        $teach_subject = $teacher_info['subject'];//所教科目
+        $session->set('subject',$teach_subject);
+        $query = Grade::find()->where(['school_name'=>$teacher_info['school_name'],'room'=>$class_arr]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
         break;
 }
 
@@ -57,8 +72,17 @@ if(Enum::isEmpty($status) || !in_array($status,TeacherStaff::getAllStaffType()))
 }else{
     ?>
 
-
     <?php Pjax::begin(); ?>
+    <?php
+    echo Breadcrumbs::widget([
+        'homeLink' => ['label'=>'首页','url'=>['site/index']],
+        'itemTemplate' => '<li>{link}</li>',
+        'links' => [
+            '学生成绩',
+        ]
+    ]);
+    ?>
+    <h2>各年级各班</h2>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [

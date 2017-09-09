@@ -38,7 +38,14 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'office_phone',
             // 'headteacher_grade',
             // 'headteacher_class',
-
+            [
+                'attribute' => 'subject',
+                'value' => function($data){
+                    return empty($data->subject)?'无':$data->subject;
+                }
+            ],
+            // 'teach_grade',
+            // 'teach_class',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

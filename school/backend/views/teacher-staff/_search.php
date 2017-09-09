@@ -41,6 +41,12 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'headteacher_class') ?>
 
+    <?php // echo $form->field($model, 'subject') ?>
+
+    <?php // echo $form->field($model, 'teach_grade') ?>
+
+    <?php // echo $form->field($model, 'teach_class') ?>
+
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>

@@ -40,13 +40,30 @@ class ScoreController extends Controller
         $this->layout = 'site_teacherStaff';
 
         $student_id = Yii::$app->request->get('sid',0);
+        $student_name = Student::getAttributeById('student_name',$student_id);
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => Score::find()->where(['student_id'=>$student_id]),
-        ]);
+        $examType = $this->getDiffTypeExam($student_id);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'examType' => $examType,
+            'student_id' => $student_id,
+            'student_name'=> $student_name,
+        ]);
+    }
+
+    public function actionPersonal()
+    {
+        $this->layout = 'site_teacherStaff';
+
+        $student_id = Yii::$app->request->get('sid',0);
+        $student_name = Student::getAttributeById('student_name',$student_id);
+
+        $examType = $this->getDiffTypeExam($student_id);
+
+        return $this->render('personal', [
+            'examType' => $examType,
+            'student_id' => $student_id,
+            'student_name'=> $student_name,
         ]);
     }
 
@@ -105,11 +122,15 @@ class ScoreController extends Controller
         $this->layout = 'site_teacherStaff';
         $model = $this->findModel($id);
 
+        $courses = Course::find()->where(['school_name'=>$model->school,'grade'=>$model->grade])->asArray()->one();
+        $courses_arr = unserialize($courses['course']);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'sid'=>$model->student_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'courses_arr'=>$courses_arr,
             ]);
         }
     }
@@ -122,10 +143,10 @@ class ScoreController extends Controller
      */
     public function actionDelete($id)
     {
-
+        $data = $this->findModel($id);
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index','sid'=>$data->student_id]);
     }
 
     /**
@@ -143,4 +164,15 @@ class ScoreController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    //找到所有的考试类型
+    public function getDiffTypeExam($id){
+        $arr =  Score::find()->where(['student_id'=>$id])->select('comment')->asArray()->all();
+        $res = [];
+        foreach($arr as $key =>$item){
+            $res[$key] = $item['comment'];
+        }
+        return array_unique($res);//去重
+    }
+
 }

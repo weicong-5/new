@@ -59,4 +59,6 @@ class Score extends \yii\db\ActiveRecord
             'class' => '班级',
         ];
     }
+
+
 }

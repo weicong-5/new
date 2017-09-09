@@ -20,6 +20,9 @@ use Yii;
  * @property string $office_phone
  * @property string $headteacher_grade
  * @property string $headteacher_class
+ * @property string $subject
+ * @property string $teach_grade
+ * @property string $teach_class
  */
 class TeacherStaff extends \yii\db\ActiveRecord
 {
@@ -67,8 +70,9 @@ class TeacherStaff extends \yii\db\ActiveRecord
 //            [['name','staff_type','school_name'],'unique'],
             ['name','unique','targetClass'=>'\common\models\TeacherStaff','message'=>'该角色已经存在'],
             [['user_id', 'sex', 'school_id'], 'integer'],
-            [['staff_type', 'name', 'political_status', 'school_name', 'office_room', 'headteacher_grade', 'headteacher_class'], 'string', 'max' => 255],
+            [['staff_type', 'name', 'political_status', 'school_name', 'office_room', 'headteacher_grade', 'headteacher_class', 'subject', 'teach_class'], 'string', 'max' => 255],
             [['tel', 'office_phone'], 'string', 'max' => 11],
+            [['teach_grade'], 'string', 'max' => 6],
         ];
     }
 
@@ -91,13 +95,11 @@ class TeacherStaff extends \yii\db\ActiveRecord
             'office_phone' => '办公电话',
             'headteacher_grade' => '任班主任所在年级',
             'headteacher_class' => '任班主任所在班级',
+            'subject' => '所教科目',
+            'teach_grade' => '所教年级',
+            'teach_class' => '所教班级',
         ];
     }
-
-//    public static function getSexIndex($sex){
-//        return array_search($sex,array(0=>'男',1=>'女'));
-//    }
-
 
     public static function getStaffTypeIndex($staff,$arr){
         return array_search($staff,$arr);

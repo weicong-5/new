@@ -19,7 +19,7 @@ class TeacherStaffSearch extends TeacherStaff
     {
         return [
             [['id', 'user_id', 'sex', 'school_id'], 'integer'],
-            [['staff_type', 'name', 'political_status', 'tel', 'school_name', 'office_room', 'office_phone', 'headteacher_grade', 'headteacher_class'], 'safe'],
+            [['staff_type', 'name', 'political_status', 'tel', 'school_name', 'office_room', 'office_phone', 'headteacher_grade', 'headteacher_class', 'subject', 'teach_grade', 'teach_class'], 'safe'],
         ];
     }
 
@@ -73,8 +73,10 @@ class TeacherStaffSearch extends TeacherStaff
             ->andFilterWhere(['like', 'office_room', $this->office_room])
             ->andFilterWhere(['like', 'office_phone', $this->office_phone])
             ->andFilterWhere(['like', 'headteacher_grade', $this->headteacher_grade])
-            ->andFilterWhere(['like', 'headteacher_class', $this->headteacher_class]);
-
+            ->andFilterWhere(['like', 'headteacher_class', $this->headteacher_class])
+            ->andFilterWhere(['like', 'subject', $this->subject])
+            ->andFilterWhere(['like', 'teach_grade', $this->teach_grade])
+            ->andFilterWhere(['like', 'teach_class', $this->teach_class]);
         return $dataProvider;
     }
 }

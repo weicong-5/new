@@ -86,8 +86,8 @@ class SiteController extends CoreController
         if(Yii::$app->request->isAjax){
             $data = Yii::$app->request->post();
             $status = $data['status'];
-            $user_id = $data['user_id'];
-            $name = $data['name'];
+            $user_id = $data['user_id'];//用户id
+            $name = $data['name'];//角色名称（学生名称 教师名称..）
             $selectIndex = $data['selectIndex'];
             $session = Yii::$app->session;
             if(!$session->isActive){

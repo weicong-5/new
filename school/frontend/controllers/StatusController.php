@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Score;
+use common\models\StudentSearch;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -10,6 +11,7 @@ use yii\web\Controller;
 
 class StatusController extends Controller
 {
+    public $layout = 'site_student';
 
     //行为过滤
     public function behaviors()
@@ -44,27 +46,29 @@ class StatusController extends Controller
 
     public function actionStudentIndex()
     {
-        $this->layout = 'site_student';
+//        $this->layout = 'site_student';
         return $this->render('student/index');
     }
 
     public function actionSchoolInfo(){
-        $status = \Yii::$app->session->get('status');
-        if($status == '学生'){
+//        $status = \Yii::$app->session->get('status');
+        $url = \Yii::$app->request->getReferrer();
+        if(strpos($url,'student')){
             $this->layout = 'site_student';
-        }else{
+        }
+        if(strpos($url,'teacher')){
             $this->layout = 'site_teacherStaff';
         }
         return $this->render('school_info');
     }
 
     public function actionStudentClassTable(){
-        $this->layout = 'site_student';
+//        $this->layout = 'site_student';
         return $this->render('student/class_table');
     }
 
     public function actionStudentScore(){
-        $this->layout = 'site_student';
+//        $this->layout = 'site_student';
         return $this->render('student/score');
     }
     //---------------------------------------------------TeacherStaff
@@ -84,10 +88,29 @@ class StatusController extends Controller
         $grade = \Yii::$app->request->get('grade',0);
         $room = \Yii::$app->request->get('room',0);
         $school = \Yii::$app->request->get('school',0);
+        $searchModel = new StudentSearch();
         return $this->render('teacher/students_of_room',[
             'grade' => $grade,
             'room' => $room,
             'school' => $school,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+
+    //班主任查看本班的所有学生
+    public function actionStudentOfClass(){
+        $this->layout = 'site_teacherStaff';
+        $searchModel = new StudentSearch();
+        return $this->render('teacher/students_of_class',[
+            'searchModel' => $searchModel,
+        ]);
+    }
+
+    public function actionPersonalInfo(){
+        $this->layout = 'site_teacherStaff';
+        $student_id = \Yii::$app->request->get('sid',0);
+        return $this->render('teacher/personal_info',[
+            'student_id' => $student_id,
         ]);
     }
 

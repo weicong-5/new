@@ -11,7 +11,7 @@ use common\models\Student;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /**
- * 前台的分数页
+ * 班主任查看学生的个人成绩页
  */
 $this->title = '个人成绩';
 $student_info = Student::find()->where(['id'=>$student_id])->asArray()->one();
@@ -20,8 +20,8 @@ $room = $student_info['class_name'];
 $school = $student_info['school_name'];
 
 $session = Yii::$app->session;
-$subject = $session->get('subject');
-//$headteacher = $session->get('headteacher');
+//$subject = $session->get('subject');
+$headteacher = $session->get('headteacher');
 
 ?>
 <div class="score-index">
@@ -29,19 +29,13 @@ $subject = $session->get('subject');
 </p-->
     <?php Pjax::begin(); ?>
     <?php
-//    print_r($student_info);
     echo Breadcrumbs::widget([
         'homeLink' => ['label'=>'首页','url'=>['site/index']],
         'itemTemplate' => '<li>{link}</li>',
         'links' => [
             [
-                'label'=>'学生成绩',
-                'url'=>['/status/teacher-modify-score'],
-            ],
-            [
-                'label'=>'本班学生列表',
-                'url'=>['/status/view-room','grade'=>"{$grade}",'room'=>"{$room}",'school'=>"{$school}"],
-                //'grade'=>$student_info['grade'],'room'=>$student_info['class_name'],'school'=>$student_info['school_name']
+                'label'=>'本班学生',
+                'url'=>['/status/student-of-score'],
             ],
             '个人成绩'
         ]
@@ -50,23 +44,24 @@ $subject = $session->get('subject');
     <h2><span><?=Html::encode($student_name)?></span>  <?= Html::encode($this->title) ?></h2>
     <?php
     foreach($examType as $item){
-        if(empty($subject)){
-            $query = Score::find()->where(['student_id'=>$student_id,'comment'=>$item]);
-        }else{
-            $query = Score::find()->where(['student_id'=>$student_id,'comment'=>$item,'subject'=>$subject]);
-        }
+//        if(empty($subject)){
+//            $query = Score::find()->where(['student_id'=>$student_id,'comment'=>$item]);
+//        }else{
+//            $query = Score::find()->where(['student_id'=>$student_id,'comment'=>$item,'subject'=>$subject]);
+//        }
+        $query = Score::find()->where(['student_id'=>$student_id,'comment'=>$item]);
         $dataProvider= new ActiveDataProvider([
             'query' => $query,
         ]);
         ?>
-            <h4><?= Html::encode($item)?></h4>
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'columns' => [
-                    ['class'=>'yii\grid\SerialColumn'],
-                    'subject',
-                    'score',
-                    [
+        <h4><?= Html::encode($item)?></h4>
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                ['class'=>'yii\grid\SerialColumn'],
+                'subject',
+                'score',
+                [
                     'header'=>'操作',
                     'class' => 'yii\grid\ActionColumn',
                     'template' => '{score/update} {score/delete}',
@@ -94,11 +89,11 @@ $subject = $session->get('subject');
                         },
                     ],
                 ],
-                ],
-                'layout'=>"{items}\n{pager}",
-            ]);?>
-    <?php
-        }
+            ],
+            'layout'=>"{items}\n{pager}",
+        ]);?>
+        <?php
+    }
     ?>
 
     <?php Pjax::end(); ?>
