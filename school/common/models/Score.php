@@ -60,5 +60,17 @@ class Score extends \yii\db\ActiveRecord
         ];
     }
 
-
+    /**
+     * @param $id
+     * @return array
+     * 获取考试的类型
+     */
+    public static function getDiffTypeExam($id){
+        $arr =  Score::find()->where(['student_id'=>$id])->select('comment')->asArray()->all();
+        $res = [];
+        foreach($arr as $key =>$item){
+            $res[$key] = $item['comment'];
+        }
+        return array_unique($res);//去重
+    }
 }

@@ -69,7 +69,18 @@ class StatusController extends Controller
 
     public function actionStudentScore(){
 //        $this->layout = 'site_student';
-        return $this->render('student/score');
+        $session = \Yii::$app->session;
+        if($session->isActive){
+            $session->open();
+        }
+
+        $student_id = $session->get('student_id');
+
+        $examType = Score::getDiffTypeExam($student_id);
+        return $this->render('student/score',[
+            'examType' => $examType,
+            'student_id'=>$student_id,
+        ]);
     }
     //---------------------------------------------------TeacherStaff
     public function actionTeacherIndex(){
@@ -123,6 +134,11 @@ class StatusController extends Controller
         ]);
     }
 
+    //----------------------------------------------------关于作业
+    public function actionTeacherAssignHomework(){
+        $this->layout = 'site_teacherStaff';
+        return $this->render('teacher/assign_homework');
+    }
 
 //    public function actionInsertScore(){
 //        $score = new Score();

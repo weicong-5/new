@@ -55,7 +55,7 @@ if(Enum::isEmpty($status) || !in_array($status,TeacherStaff::getAllStaffType()))
         ]
     ]);
     ?>
-    <h2>本班学生</h2>
+    <h2>本班学生(<?=$class?>)</h2>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

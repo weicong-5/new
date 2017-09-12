@@ -25,9 +25,13 @@ $config = [
             'class' => 'backend\modules\school\school',
         ],
         //新增的
-        'role' => [
-            'class' => 'backend\modules\roles\role'
-        ],
+//        'role' => [
+//            'class' => 'backend\modules\roles\role'
+//        ],
+//        'user' => [
+//            'class' => 'backend\modules\user\user',
+////            'identityClass' => 'backend\modules\user\models\User',
+//        ]
 //        'user' => [
 //            'class' => 'backend\modules\user\user',
 ////            'identityClass' => 'backend\modules\user\models\User',
@@ -36,8 +40,9 @@ $config = [
     ],
     'components' => [
 //        'user' => [
-//            'class'=>'yii\web\User',
-//            'identityClass' => 'common\models\User',
+////            'class'=>'yii\web\User',
+////            'identityClass' => 'common\models\User',
+//            'identityClass' => 'backend\modules\user\models\User',
 //            'enableAutoLogin' => true,
 //        ],
 //        'user' => [

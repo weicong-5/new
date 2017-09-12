@@ -129,7 +129,7 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!--<img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">-->
-                            <span class="hidden-xs"><?= Yii::$app->user->identity->username ?></span>
+                            <span class="hidden-xs"><?= empty(Yii::$app->user->identity->username)?"":Yii::$app->user->identity->username ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -137,8 +137,8 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
                                 <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                 <p>
-                                    <?= Yii::$app->user->identity->username ?>
-                                    <small><?php echo Yii::t('backend', 'Member since {0, date, short}', Yii::$app->user->identity->created_at) ?></small>
+                                    <?= empty(Yii::$app->user->identity->username)?"":Yii::$app->user->identity->username ?>
+                                    <small><?php echo Yii::t('backend', 'Member since {0, date, short}', empty(Yii::$app->user->identity->created_at)?"":Yii::$app->user->identity->created_at) ?></small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
@@ -259,6 +259,7 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
 //                                'visible'=>Yii::$app->user->can('/user/admin/index')
 //                            ]
                             ['label' => '用户列表', 'url'=>['/users/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+//                            ['label' => '用户列表new', 'url'=>['/user/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
 
                         ]
                     ],
@@ -315,6 +316,16 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
 //                                'visible'=>Yii::$app->user->can('/user/admin/index')
 //                            ]
 //                            ['label' => '角色列表', 'url'=>['/users/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+
+                        ]
+                    ],
+                    [
+                        'label' => '家长管理',
+                        'url' => '#',
+                        'icon' => '<i class="fa fa-edit"></i>',
+                        'options' => ['class' => 'treeview'],
+                        'items' =>[
+                            ['label'=>'家长列表', 'url'=>['#'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
 
                         ]
                     ],

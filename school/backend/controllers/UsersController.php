@@ -11,10 +11,13 @@ namespace backend\controllers;
 use common\models\Status;
 use common\models\User;
 use common\models\UserSearch;
+use common\models\TeacherStaff;
+
 use frontend\models\SignupForm;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+
 
 class UsersController extends Controller{
 
@@ -70,6 +73,9 @@ class UsersController extends Controller{
     {
         $model = new SignupForm();
 
+        $selects = array('0'=>'请选择');
+        $political_status = array_merge($selects,TeacherStaff::getAllPoliticalStatus());
+
         if ($model->load(\Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                     $searchModel = new UserSearch();
@@ -83,6 +89,7 @@ class UsersController extends Controller{
 
         return $this->render('create', [
             'model' => $model,
+            'political_status' => $political_status,
         ]);
     }
 

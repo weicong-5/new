@@ -35,12 +35,13 @@ class Profile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
-            [['user_id'], 'integer'],
+            [['user_id', 'sex', 'political_status', 'phone'], 'required'],
+            [['user_id', 'sex'], 'integer'],
             [['bio'], 'string'],
-            [['name', 'public_email', 'gravatar_email', 'location', 'website'], 'string', 'max' => 255],
+            [['name', 'public_email', 'gravatar_email', 'location', 'website', 'political_status'], 'string', 'max' => 255],
             [['gravatar_id'], 'string', 'max' => 32],
             [['timezone'], 'string', 'max' => 40],
+            [['phone'], 'string', 'max' => 11],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -60,6 +61,9 @@ class Profile extends \yii\db\ActiveRecord
             'website' => 'Website',
             'bio' => 'Bio',
             'timezone' => 'Timezone',
+            'sex' => 'Sex',
+            'political_status' => 'Political Status',
+            'phone' => 'Phone',
         ];
     }
 
@@ -69,5 +73,10 @@ class Profile extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public static function getAttributeById($id,$attribute){
+        $res = self::find()->where(['user_id'=>$id])->asArray()->one();
+        return $res[$attribute];
     }
 }

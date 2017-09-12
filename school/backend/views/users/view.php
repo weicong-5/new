@@ -6,6 +6,8 @@ use yii\bootstrap\Modal;
 use yii\widgets\Pjax;
 use yii\grid\GridView;
 
+use common\models\Profile;
+
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
 $userInfo = \common\models\User::find()->where(['id'=>$model->id])->one();
@@ -52,6 +54,30 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'is_manager',
                         'value' => function($data){
                             return $data->is_manager == 1?'是':'否';
+                        }
+                    ],
+                    [
+                        'attribute' => '性别',
+                        'value' => function($data){
+//                            return $data->id;
+                            $sex = Profile::getAttributeById($data->id,'sex');
+                            if(empty($sex)){
+                                return null;
+                            }else{
+                                return Profile::getAttributeById($data->id,'sex') === 0?'男':'女';
+                            }
+                        }
+                    ],
+                    [
+                        'attribute' => '政治面貌',
+                        'value' => function($data){
+                            return Profile::getAttributeById($data->id,'political_status');
+                        }
+                    ],
+                    [
+                        'attribute' => '手机号码',
+                        'value' => function($data){
+                            return Profile::getAttributeById($data->id,'phone');
                         }
                     ],
                 ],

@@ -87,10 +87,10 @@ JS;
                     <a href="#" class="list-group-item" id="select" data-toggle="modal" data-target="#select-modal"><i class="glyphicon glyphicon-random pull-right"></i>切换身份</a>
                 <?php endif;?>
                 <a href="/site/eat" class="list-group-item"><i class="glyphicon glyphicon-cutlery pull-right"></i>吃</a>
-                <a href="#" class="list-group-item"><i class="glyphicon glyphicon-glass pull-right"></i>喝</a>
-                <a href="#" class="list-group-item">玩</a>
-                <a href="#" class="list-group-item">乐</a>
-                <a href="#" class="list-group-item">购物优惠</a>
+                <a href="/site/drink" class="list-group-item"><i class="glyphicon glyphicon-glass pull-right"></i>喝</a>
+                <a href="/site/play" class="list-group-item">玩</a>
+<!--                <a href="#" class="list-group-item">乐</a>-->
+                <a href="/site/shopping" class="list-group-item">购物优惠</a>
             </div>
             <div class="col-lg-9">
                 <?=$content?>

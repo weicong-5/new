@@ -1,6 +1,7 @@
 <?php
 namespace frontend\models;
 
+use common\models\Profile;
 use common\models\User;
 use yii\base\Model;
 use Yii;
@@ -14,6 +15,10 @@ class SignupForm extends Model
     public $email;
     public $password;
 
+    //用户信息
+    public $sex;
+    public $phone;
+    public $political_status;
     /**
      * @inheritdoc
      */
@@ -33,6 +38,9 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+
+            [['sex','phone','political_status'],'required'],
+
         ];
     }
 
@@ -55,8 +63,20 @@ class SignupForm extends Model
         //补充的属性
         $user->status = 1;
         $user->is_manager = 0;
+
+        if($user->save()){
+            $profile = new Profile();
+            $profile->user_id = $user->id;
+            $profile->sex = $this->sex;
+            $profile->phone = $this->phone;
+            $profile->political_status = $this->political_status;
+
+            return $profile->save()?$user:null;
+        }else{
+            return null;
+        }
         
-        return $user->save() ? $user : null;
+//        return $user->save() ? $user : null;
     }
 
     //补充 让标签显示中文
@@ -66,6 +86,9 @@ class SignupForm extends Model
             'username' => Yii::t('frontend','Username'),
             'password' => Yii::t('frontend','Password'),
             'email' => Yii::t('frontend','Email'),
+            'sex'=>Yii::t('frontend','Sex'),
+            'phone'=>Yii::t('frontend','Phone'),
+            'political_status'=>Yii::t('frontend','Political status')
         ];
     }
 }

@@ -139,6 +139,11 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return static::findOne(['username' => $username,'status' => self::STATUS_ACTIVE,'is_manager' => self::IS_USER]);
     }
 
+    /**
+     * @param $username
+     * @return static
+     * 通过用户名找到管理员
+     */
     public static function findManagerByUserName($username){
         return static::findOne(['username' => $username,'status' => self::STATUS_ACTIVE,'is_manager' => self::IS_MANAGER]);
     }
@@ -171,5 +176,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function generateAuthKey(){
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
+
 
 }

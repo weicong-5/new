@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Student;
 use common\models\User;
 use kartik\helpers\Enum;
 use Yii;
@@ -11,7 +12,6 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
-//use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\ykocomposer\controller\CoreController;
@@ -93,6 +93,11 @@ class SiteController extends CoreController
             if(!$session->isActive){
                 $session->open();
             }
+            if($status == '学生'){
+                $student_info = Student::find()->where(['user_id'=>$user_id,'student_name'=>$name])->asArray()->one();
+                $session->set('student_id',$student_info['id']);
+            }
+
 
             $session->set('status',$status);
             $session->set('user_id',$user_id);
@@ -257,6 +262,30 @@ class SiteController extends CoreController
      * @return string
      */
     public function actionEat(){
-        return $this->render('eat');
+        return $this->render('livingArea/eat');
+    }
+
+    /**
+     * 生活圈 喝 专栏
+     * @return string
+     */
+    public function actionDrink(){
+        return $this->render('livingArea/drink');
+    }
+
+    /**
+     * 生活圈 游玩专栏
+     * @return string
+     */
+    public function actionPlay(){
+        return $this->render('livingArea/play');
+    }
+
+    /**
+     * 生活圈 购物专栏
+     * @return string
+     */
+    public function actionShopping(){
+        return $this->render('livingArea/shopping');
     }
 }
