@@ -11,6 +11,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\base\InvalidParamException;
+use yii\jui\SliderInput;
 use yii\web\BadRequestHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -81,7 +82,10 @@ class SiteController extends CoreController
         return $this->render('index');
     }
 
-    //身份选择
+    /**
+     * 身份选择
+     * @return array
+     */
     public function actionChoose(){
         if(Yii::$app->request->isAjax){
             $data = Yii::$app->request->post();
@@ -194,9 +198,12 @@ class SiteController extends CoreController
                 }
             }
         }
-
+        $sex_list = SignupForm::getSexList();
+        $political_list = SignupForm::getPoliticalList();
         return $this->render('signup', [
             'model' => $model,
+            'sex_list' => $sex_list,
+            'political_list' => $political_list,
         ]);
     }
 
@@ -250,11 +257,16 @@ class SiteController extends CoreController
     }
 
     /**
-     * 前往用户资料
+     * 前往用户资料 个人中心
      * @return string
      */
     public function actionPersonal(){
-        return $this->render('personal');
+        $user = User::findByUserName(yii::$app->user->identity->username);
+        $profile = $user->profile;
+        return $this->render('personal',[
+            'user' => $user,
+            'profile'=>$profile,
+        ]);
     }
 
     /**

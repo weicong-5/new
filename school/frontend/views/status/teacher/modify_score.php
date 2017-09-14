@@ -48,6 +48,9 @@ switch($teacher_info['staff_type']){
         $query = Grade::find()->where(['school_name'=>$teacher_info['school_name'],'room'=>$class_arr]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pagesize' => 10,
+            ]
         ]);
         break;
     case '科任老师':
@@ -57,6 +60,9 @@ switch($teacher_info['staff_type']){
         $query = Grade::find()->where(['school_name'=>$teacher_info['school_name'],'room'=>$class_arr]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pagesize' => 10,
+            ]
         ]);
         break;
 }

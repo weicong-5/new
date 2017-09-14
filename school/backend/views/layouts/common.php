@@ -210,14 +210,24 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
                         'icon'=>'<i class="fa fa-edit"></i>',
                         'options'=>['class'=>'treeview'],
                         'items'=>[
-                            ['label'=>'学校列表', 'url'=>['/schools/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+//                            ['label'=>'学校列表', 'url'=>['/schools/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
                             [
-                                'label'=>Yii::t('school', 'School List'),
+                                'label'=>Yii::t('school', 'School Setting'),
                                 'url'=>['/school/school/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>',
                                 'visible'=>Yii::$app->user->can('/school/school/index'),
                                 'items'=>[
                                     ['label'=>Yii::t('school', 'School List'), 'url'=>['/school/school'], 'icon'=>'<i class="fa fa-angle-double-right"></i>',  'options'=>['class'=>'click']],
                                     ['label'=>Yii::t('school', 'Create School'), 'url'=>['/school/school/create'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+                                    //['label'=>Yii::t('school', 'View School'), 'url'=>['/school/school/view'], 'icon'=>'<i class="fa fa-angle-double-right"></i>', 'visible'=> ($this->context->action->id == 'view' && $this ->context->id)],
+                                ],
+                            ],
+                            [
+                                'label'=>Yii::t('school', 'Grade Setting'),
+                                'url'=>['/grade/grade/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>',
+                                'visible'=>Yii::$app->user->can('/grade/grade/index'),
+                                'items'=>[
+                                    ['label'=>Yii::t('school', 'Grade List'), 'url'=>['/grade/grade'], 'icon'=>'<i class="fa fa-angle-double-right"></i>',  'options'=>['class'=>'click']],
+                                    ['label'=>Yii::t('school', 'Create Grade'), 'url'=>['/grade/grade/create'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
                                     //['label'=>Yii::t('school', 'View School'), 'url'=>['/school/school/view'], 'icon'=>'<i class="fa fa-angle-double-right"></i>', 'visible'=> ($this->context->action->id == 'view' && $this ->context->id)],
                                 ],
                             ],
@@ -231,7 +241,7 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
 
                                 ],
                             ],
-                            ['label'=>Yii::t('school', 'District'), 'url'=>['/school/school-district/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+                            ['label'=>Yii::t('school', 'District Setting'), 'url'=>['/school/school-district/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
                             [
                                 'label'=>Yii::t('backend', 'Users'),
                                 'icon'=>'<i class="fa fa-users"></i>',
@@ -270,7 +280,7 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
                         'icon' => '<i class="fa fa-edit"></i>',
                         'options' => ['class' => 'treeview'],
                         'items' =>[
-                            ['label'=>'班级列表', 'url'=>['/grade/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+                            ['label'=>'班级列表', 'url'=>['/grade/grade/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
                             ['label'=>'课程列表', 'url'=>['/course/index'],'icon'=>'<i class="fa fa-angle-double-right"></i>'],
 //                            [
 //                                'label'=>Yii::t('backend', 'Users'),

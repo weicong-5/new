@@ -43,12 +43,14 @@ class UsersController extends Controller{
     public function actionView($id)
     {
         $query = Status::find()->where(['user_id'=>$id]);
-        $dataProvider = new ActiveDataProvider([
+        $dataProvider = new ActiveDataProvider([//该用户所拥有的身份
             'query'=> $query,
         ]);
+        $status_list = Status::getStatusList();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'dataProvider' => $dataProvider,
+            'status_list' => $status_list,
         ]);
     }
 

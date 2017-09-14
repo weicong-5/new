@@ -2,35 +2,26 @@
 
 namespace backend\modules\school\models;
 
-use dektrium\user\models\User;
+use backend\modules\grade\models\Grade;
 use Yii;
 
 /**
- * This is the model class for table "school_school".
+ * This is the model class for table "school".
  *
  * @property integer $id
- * @property string $name
- * @property integer $province_id
- * @property integer $city_id
  * @property integer $area_id
+ * @property string $school_name
  * @property string $address
- * @property string $school_type
- * @property string $school_num
- * @property integer $manage_uid
- * @property integer $quantong_id
- * @property string $number
- * @property string $deny_code
- *
- * @property SchoolDistrict $province
+ * @property string $district
  */
-class School extends \yii\db\ActiveRecord
+class School extends \common\models\School
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'school_school';
+        return 'school';
     }
 
     /**
@@ -39,16 +30,13 @@ class School extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['province_id', 'city_id', 'area_id', 'manage_uid', 'quantong_id'], 'integer'],
-            [['number', 'deny_code', 'province_id', 'city_id', 'area_id', 'manage_uid', 'quantong_id', 'name', 'school_num', 'school_type'], 'required'],
-            [['number', 'deny_code'], 'string'],
-            [['name', 'address', 'school_num'], 'string', 'max' => 255],
-            //[['province_id', 'city_id', 'area_id'], 'exist', 'skipOnError' => true, 'targetClass' => SchoolDistrict::className(), 'targetAttribute' => ['province_id' => 'id']],
-            [['manage_uid'], 'exist', 'targetClass' => User::className(), 'targetAttribute' => ['manage_uid' => 'id']],
-            [['school_num', 'area_id'], 'unique', 'targetAttribute' => ['school_num', 'area_id']],
+            [['area_id', 'school_name', 'address', 'district'], 'required'],
+            [['area_id'], 'integer'],
+            [['school_name', 'address', 'district'], 'string', 'max' => 255],
+            //组合唯一规则
+            [['school_name','district'],'unique','targetAttribute'=>['school_name','district'],'message'=>'该学校已经存在']
         ];
     }
-
 
     /**
      * @inheritdoc
@@ -56,91 +44,39 @@ class School extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('school', 'ID'),
-            'name' => Yii::t('school', 'Name'),
-            'province_id' => Yii::t('school', 'Province ID'),
-            'city_id' => Yii::t('school', 'City ID'),
-            'area_id' => Yii::t('school', 'Area ID'),
-            'address' => Yii::t('school', 'Address'),
-            'school_type' => Yii::t('school', 'School Type'),
-            'school_num' => Yii::t('school', 'School Num'),
-            'manage_uid' => Yii::t('school', 'Manage Uid'),
-            'quantong_id' => Yii::t('school', 'Quantong ID'),
-            'number' => Yii::t('school', 'Number'),
-            'deny_code' => Yii::t('school', 'Deny Code'),
+            'id' => 'ID',
+            'area_id' => Yii::t('school','Area ID'),
+            'school_name' => Yii::t('school','School Name'),
+            'address' => Yii::t('school','Address'),
+            'district' => Yii::t('school','District'),
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProvince()
-    {
-        return $this->hasOne(SchoolDistrict::className(), ['id' => 'province_id'])->inverseOf('schools');
+    public function getGrades(){
+        return $this->hasMany(Grade::className(),['school_id'=>'id']);
     }
 
     /**
-     * @inheritdoc
-     * @return \backend\modules\school\models\query\SchoolQuery the active query used by this AR class.
+     * 获取所有学校
+     * @return null
      */
-    public static function find()
-    {
-        return new \backend\modules\school\models\query\SchoolQuery(get_called_class());
-    }
-
-    /**
-     * The parameters ($deny_code, $number) passed to serialize, $school_num comma to be processed.
-     * @param bool $insert
-     * @return bool
-     */
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            $this->deny_code = $this->fieldsSerialize($this->deny_code);
-            $this->number = $this->fieldsSerialize($this->number);
-            $this->school_type = implode(',', $this->school_type);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function fieldsSerialize($field, $explode1 = '|', $explode2 = ':')
-    {
-        //$number = [];
-        $field = explode($explode1, $field);
-        if (is_array($field)) {
-            foreach ($field as $value) {
-                $number[] = explode($explode2, $value);
+    public static function getAllSchool(){
+        $result = null;
+        $res = School::find()->asArray()->all();
+        if($res){
+            foreach($res as $list){
+                $result[$list['id']] = $list['school_name'];
             }
-            return serialize($number);
-        } else {
-            return $field;
         }
+         return  array_merge(array('0'=>'请选择'),$result);
     }
 
-    public static function fieldUnSerialize($field)
-    {
-        $field = unserialize($field);
-        $returnField = '';
-        foreach ($field as $value) {
-            $returnField .= $value[0].':'.$value[1].'|';
+    public static function getSchoolNameById($id){
+        $res = School::find()->where(['id'=>$id])->asArray()->one();
+        if($res){
+            return $res['school_name'];
+        }else{
+            return null;
         }
-        return substr($returnField, 0, strlen($returnField) - 1);
-    }
-
-    public static function schoolType($type)
-    {
-        $operators = array(
-            Yii::t('school', 'Primary school') => 1,
-            Yii::t('school', 'Junior high school') => 2,
-            Yii::t('school', 'Senior middle school') => 3,
-            Yii::t('school', 'Preschool') => 0,
-        );
-        $result = '| ';
-        foreach ($type as $value) {
-            $result .= array_search($value, $operators)." | ";
-        }
-        return $result;
     }
 }

@@ -45,9 +45,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => ['date','php:Y-m-d H:i:s']
                     ],
                     [
-                        'attribute' => 'status',
+                        'attribute' => 'active',
                         'value' => function($data){
-                            return $data->status == 1?'有效':'无效';
+                            return $data->active == 1?'有效':'无效';
                         }
                     ],
                     [
@@ -58,26 +58,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'attribute' => '性别',
-                        'value' => function($data){
-//                            return $data->id;
-                            $sex = Profile::getAttributeById($data->id,'sex');
-                            if(empty($sex)){
-                                return null;
-                            }else{
-                                return Profile::getAttributeById($data->id,'sex') === 0?'男':'女';
-                            }
+                        'value' => function($model){
+                            return $model->profile['sex']=='0'?'男':'女';
                         }
                     ],
                     [
                         'attribute' => '政治面貌',
-                        'value' => function($data){
-                            return Profile::getAttributeById($data->id,'political_status');
+                        'value' => function($model){
+                            return $model->profile['political_status'];
                         }
                     ],
                     [
                         'attribute' => '手机号码',
-                        'value' => function($data){
-                            return Profile::getAttributeById($data->id,'phone');
+                        'value' => function($model){
+                            return $model->profile['phone'];
                         }
                     ],
                 ],
@@ -88,24 +82,17 @@ $this->params['breadcrumbs'][] = $this->title;
             Modal::begin([
                 'id' => 'select-modal',
                 'header' => '<h4 class="modal-title">选择身份</h4>',
-//                '<a href="#" class="btn btn-primary" data-dismiss="modal">确定</a>'
                 'footer' => Html::a('确定','#',['id'=>'sure','class'=>'btn btn-primary',])
             ]);
-//            $select_data[] = '--选择身份--';
             //这里的身份选择数组 可以到时候在用户身份活动对象中定义 以后修改就一个地方修改即可
-            $select_data = array('none'=>'--选择身份--','student'=>'学生','parent'=>'家长','teacher-staff'=>'教师职工');
-//            foreach($status_list as $item){
-//                $role_name = \backend\Modules\roles\models\Roles::getRoleNameById($item['role_id']);
-//                $name = \common\models\Student::getAttributeById('name',$item['status_id']);
-//                $select_data[] = "{$role_name}——{$name}";
-//            }
 
-            echo \yii\helpers\Html::dropDownList('select_status',[],$select_data,['id'=>'select_list','class'=>'form-control']);
+            echo \yii\helpers\Html::dropDownList('select_status',[],$status_list,['id'=>'select_list','class'=>'form-control']);
             echo \yii\helpers\Html::textInput('test',null,['id'=>'test']);
             Modal::end();
             ?>
             <h4>用户身份</h4>
             <?php
+            print_r($model->status);
             echo \yii\helpers\Html::a('create','#',[
             'data-toggle' => 'modal',// 注意是modal 不是model
             'data-target' => '#select-modal',
@@ -124,14 +111,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'yii\grid\ActionColumn',
                             'template' => '{status/view} {status/delete}',
                             'buttons' => [
-//                                'status/delete' => function($url,$model,$key){
-//                                    $options = [
-//                                        'title' => '查看',
-//                                        'aria-label' => '查看',
-//                                        'data-pjax'=>'0',
-//                                    ];
-//                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>',$url,$options);
-//                                },
                                 'status/view' => function($url,$model,$key){
                                     $options = [
                                         'class' => 'btn btn-xs btn-primary',
@@ -142,11 +121,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',$url,$options);
                                 },
                                 'status/delete' => function($url,$model,$key){
-//                                    $options = [
-//                                        'title' => '查看',
-//                                        'aria-label' => '查看',
-//                                        'data-pjax'=>'0',
-//                                    ];
                                     return Html::a('<span class="glyphicon glyphicon-trash"></span>',$url,[
                                         'class' => 'btn btn-xs btn-danger',
                                         'title' => '删除',
@@ -184,7 +158,8 @@ $(document).ready(function(){
             return;
         }else{
             test_text.val(selected.val());
-            sure_button.attr('href','/'+selected.val()+'/create?user_id='+$model->id+'&status='+selected.text());
+            sure_button.attr('href','/'+selected.val()+'/'+selected.val()+'/create?user_id='+$model->id+'&status='+selected.text());
+            //比如选择创建学生身份则 url变成/student/create?user_id=传入的ID和status=身份
         }
     });
 });

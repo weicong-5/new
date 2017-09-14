@@ -23,14 +23,18 @@
  */
 return [
     'Schools' => '学校',
+    'School Setting' => '学校设置',
     'School List' => '学校列表',
+    'All schools' => '所有学校',
     'Create School' => '创建学校',
     'View School' => '查看学校',
     'Name' => '名称',
     'Province ID' => '省份',
     'City ID' => '城市',
     'Area ID' => '区域',
+    'District' => '区域',
     'Address' => '地址',
+    'School Name' => '学校名称',
     'School Type' => '学校类型',
     'School Num' => '学校编号',
     'Manage Uid' => '管理员ID',
@@ -44,7 +48,7 @@ return [
     'Junior high school' => '初中',
     'Senior middle school' => '高中',
     'Create' => '创建',
-    'District' => '区域设置',
+    'District Setting' => '区域设置',
     'Set District' => '设置区域选项',
     'Update' => '更新',
     'Delete' => '删除',
@@ -65,4 +69,12 @@ return [
     'Display Order' => '排序',
     'Please Select {type}' => '--请选择{type}--',
 
+    'Grade Setting' => '班级设置',
+    'Grade List' => '班级列表',
+    'Create Grade' => '创建班级',
+    'All Grades' => '所有班级',
+
+    'Grade' => '年级',
+    'Room' => '班级',
+    'Update Grade:' => '修改班级:',
 ];

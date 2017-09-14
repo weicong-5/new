@@ -11,6 +11,8 @@ $config = [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
+    'timeZone'=>'Asia/Shanghai',
+//    'language'=>'zh-CN',
     'modules' => [
         'admin' => [
             'class' => 'mdm\admin\Module',
@@ -25,6 +27,16 @@ $config = [
             'class' => 'backend\modules\school\school',
         ],
         //新增的
+        'student'=> [
+            'class' => 'backend\modules\student\student',
+        ],
+        'grade'=> [
+            'class' => 'backend\modules\grade\grade',
+        ],
+        'area' => [
+            'class' => 'backend\modules\area\area',
+        ]
+
 //        'role' => [
 //            'class' => 'backend\modules\roles\role'
 //        ],

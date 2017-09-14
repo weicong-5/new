@@ -50,6 +50,13 @@ class Status extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser(){
+        return $this->hasOne(User::className(),['id'=>'user_id']);
+    }
+
+    /**
      * @param $user_id
      * @return null 通过用户ID获取身份ID集合
      */
@@ -61,5 +68,24 @@ class Status extends \yii\db\ActiveRecord
         }else{
             return $status;
         }
+    }
+
+    /**
+     * 获取身份的下拉框中的数组值
+     */
+    public static function getStatusList(){
+        return [
+            'none'=>'--选择身份--',
+            'student'=>'学生',
+            'parent'=>'家长',
+            'teacher-staff'=>'教师职工'
+        ];
+    }
+
+    /**
+     * 判断身份是否存在
+     */
+    public static function isStatusExist(){
+
     }
 }

@@ -64,7 +64,7 @@ class SignupForm extends Model
         $user->status = 1;
         $user->is_manager = 0;
 
-        if($user->save()){
+        if($user->save()){//往用户表插入数据的同时向用户信息表插入对应的用户信息
             $profile = new Profile();
             $profile->user_id = $user->id;
             $profile->sex = $this->sex;
@@ -75,8 +75,7 @@ class SignupForm extends Model
         }else{
             return null;
         }
-        
-//        return $user->save() ? $user : null;
+
     }
 
     //补充 让标签显示中文
@@ -89,6 +88,20 @@ class SignupForm extends Model
             'sex'=>Yii::t('frontend','Sex'),
             'phone'=>Yii::t('frontend','Phone'),
             'political_status'=>Yii::t('frontend','Political status')
+        ];
+    }
+
+    public static function getSexList(){
+        return  array(0=>'男',1=>'女');
+    }
+
+    public static function getPoliticalList(){
+        return [
+            '0'=>'请选择',
+            '1'=>'党员',
+            '2'=>'群众',
+            '3'=>'民主党派成员',
+            '4'=>'无党派人士',
         ];
     }
 }

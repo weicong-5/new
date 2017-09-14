@@ -16,6 +16,9 @@ use Yii;
  * @property string $website
  * @property string $bio
  * @property string $timezone
+ * @property integer $sex
+ * @property string $political_status
+ * @property string $phone
  *
  * @property User $user
  */
@@ -75,8 +78,17 @@ class Profile extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
+    /**
+     * 根据ID获取某个属性
+     * @param $id
+     * @param $attribute
+     * @return mixed
+     */
     public static function getAttributeById($id,$attribute){
         $res = self::find()->where(['user_id'=>$id])->asArray()->one();
         return $res[$attribute];
     }
+
+
+
 }

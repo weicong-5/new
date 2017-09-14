@@ -76,10 +76,9 @@ class StudentController extends Controller
     {
         $model = new Student();
         $model->setAttribute('user_id', $user_id);
-        $selects = array('0'=>'请选择');
-        $schools = array_merge($selects,School::getAllSchool());
+        $schools = School::getAllSchool();
 
-        $grades = array_merge($selects,Grade::getAllGrades());
+        $grades = Grade::getAllGrades();
 
         if($model->load(Yii::$app->request->post())) {
             //根据学校id和年级找到课程id  插入student表中的courseID

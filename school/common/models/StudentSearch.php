@@ -18,7 +18,7 @@ class StudentSearch extends Student
     public function rules()
     {
         return [
-            [['id', 'user_id', 'student_no', 'school_id', 'course_id', 'score_id'], 'integer'],
+            [['id', 'user_id', 'student_no', 'school_id','accommodate'], 'integer'],
             [['school_name', 'student_name', 'sex', 'grade', 'class_name', 'class_position'], 'safe'],
         ];
     }
@@ -51,6 +51,9 @@ class StudentSearch extends Student
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pagesize' => 10,
+            ]
         ]);
 
         $this->load($params);
@@ -67,8 +70,7 @@ class StudentSearch extends Student
             'user_id' => $this->user_id,
             'student_no' => $this->student_no,
             'school_id' => $this->school_id,
-            'course_id' => $this->course_id,
-            'score_id' => $this->score_id,
+            'accommodate'=> $this->accommodate,
         ]);
 
         $query->andFilterWhere(['like', 'school_name', $this->school_name])

@@ -17,8 +17,7 @@ use Yii;
  * @property string $grade
  * @property string $class_name
  * @property string $class_position
- * @property integer $course_id
- * @property integer $score_id
+ * @property integer $accommodate
  */
 class Student extends \yii\db\ActiveRecord
 {
@@ -38,7 +37,7 @@ class Student extends \yii\db\ActiveRecord
         return [
             ['student_no','unique','targetClass'=>'\common\models\Student','message'=>'该学号已经存在'],
             [['user_id', 'student_no', 'school_id', 'school_name', 'student_name', 'grade', 'class_name'], 'required'],
-            [['user_id', 'student_no', 'school_id', 'course_id', 'score_id'], 'integer'],
+            [['user_id', 'student_no', 'school_id', 'accommodate'], 'integer'],
             [['school_name', 'student_name', 'grade', 'class_name', 'class_position'], 'string', 'max' => 255],
             [['sex'], 'string', 'max' => 8],
         ];
@@ -60,8 +59,7 @@ class Student extends \yii\db\ActiveRecord
             'grade' => '年级',
             'class_name' => '班级',
             'class_position' => '班内职务',
-            'course_id' => 'Course ID',
-            'score_id' => 'Score ID',
+            'accommodate' => '住宿',
         ];
     }
 

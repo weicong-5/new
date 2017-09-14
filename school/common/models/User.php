@@ -22,7 +22,7 @@ use yii\base\NotSupportedException;
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $last_login_at
- * @property integer $status
+ * @property integer $active
  * @property integer $is_manager
  *
  * @property Profile $profile
@@ -89,8 +89,11 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'created_at' => '生成时间',
             'updated_at' => '更新时间',
             'last_login_at' => '最后一次登录时间',
-            'status' => '身份',
+            'active' => '身份有效性',
             'is_manager' => '管理员',
+            'sex'=>'性别',
+            'political_status' => '政治面貌',
+            'phone' => '手机号码'
         ];
     }
 
@@ -100,6 +103,14 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function getProfile()
     {
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus()
+    {
+        return $this->hasMany(Status::className(),['user_id' => 'id']);
     }
 
     /**
@@ -136,7 +147,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      * @return static
      */
     public static function findByUserName($username){
-        return static::findOne(['username' => $username,'status' => self::STATUS_ACTIVE,'is_manager' => self::IS_USER]);
+        return static::findOne(['username' => $username,'active' => self::STATUS_ACTIVE,'is_manager' => self::IS_USER]);
     }
 
     /**
@@ -145,7 +156,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      * 通过用户名找到管理员
      */
     public static function findManagerByUserName($username){
-        return static::findOne(['username' => $username,'status' => self::STATUS_ACTIVE,'is_manager' => self::IS_MANAGER]);
+        return static::findOne(['username' => $username,'active' => self::STATUS_ACTIVE,'is_manager' => self::IS_MANAGER]);
     }
 
     public function getId(){
@@ -176,6 +187,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function generateAuthKey(){
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
+
 
 
 }

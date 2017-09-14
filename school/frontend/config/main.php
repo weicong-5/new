@@ -11,6 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'timeZone' => 'Asia/Shanghai',//设置系统时区
     'modules' => [
         'user' => [
             // following line will restrict access to admin controller from frontend application

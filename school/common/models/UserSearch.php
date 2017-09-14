@@ -18,7 +18,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'confirmed_at', 'blocked_at', 'created_at', 'updated_at', 'last_login_at', 'status', 'is_manager'], 'integer'],
+            [['id', 'confirmed_at', 'blocked_at', 'created_at', 'updated_at', 'last_login_at', 'active', 'is_manager'], 'integer'],
             [['username', 'email', 'password_hash', 'auth_key', 'unconfirmed_email', 'registration_ip'], 'safe'],
         ];
     }
@@ -41,7 +41,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find()->where(['is_manager'=>'0']);
+        $query = User::find()->where(['is_manager'=>'0']);//选择身份不是管理员的
 
         // add conditions that should always apply here
 
@@ -52,8 +52,6 @@ class UserSearch extends User
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
@@ -65,7 +63,7 @@ class UserSearch extends User
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'last_login_at' => $this->last_login_at,
-            'status' => $this->status,
+            'active' => $this->active,
             'is_manager' => $this->is_manager,
         ]);
 

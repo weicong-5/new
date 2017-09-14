@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\user\models\UserSearch */
+/* @var $model common\models\UserSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -39,7 +39,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'last_login_at') ?>
 
-    <?php // echo $form->field($model, 'status') ?>
+    <?php // echo $form->field($model, 'active') ?>
 
     <?php // echo $form->field($model, 'is_manager') ?>
 
