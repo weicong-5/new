@@ -21,14 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-6">
             <p>
                <h4>用户信息</h4>
-                <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-                    'class' => 'btn btn-danger',
-                    'data' => [
-                        'confirm' => 'Are you sure you want to delete this item?',
-                        'method' => 'post',
-                    ],
-                ]) ?>
             </p>
             <?= DetailView::widget([
                 'model' => $model,
@@ -74,6 +66,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $model->profile['phone'];
                         }
                     ],
+                ],
+            ]) ?>
+            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
+                    'method' => 'post',
                 ],
             ]) ?>
         </div>

@@ -22,7 +22,7 @@ class StudentController extends Controller
 
     //定义事件
     const EVENT_AFTER_CREATE = 'eventAfterCreate';//创建之后的事件
-    const EVENT_AFTER_DELETE = 'eventAfterDelete';
+    const EVENT_AFTER_DELETE = 'eventAfterDelete';//删除之后的事件
     /**
      * @inheritdoc
      */

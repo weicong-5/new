@@ -48,12 +48,27 @@ class Area extends \yii\db\ActiveRecord
         ];
     }
 
+    //DAO查询
+    public static function queryAll($sql){
+        return Yii::$app->db->createCommand($sql)->queryAll();
+    }
+
+    public static function queryOne($sql){
+        return Yii::$app->db->createCommand($sql)->queryOne();
+    }
+    //读取某一列数据
+    public static function queryColumn($sql){
+        return Yii::$app->db->createCommand($sql)->queryColumn();
+    }
+
     /**
      * @return array|\yii\db\ActiveRecord[] 数组形式获取所有地区
      */
     public static function getAll(){
         $areas = ['0' => '请选择地区'];
-        $res = self::find()->asArray()->all();
+//        $res = self::find()->asArray()->all();
+        $sql = "SELECT * FROM ".self::tableName();
+        $res = self::queryAll($sql);
         if($res){
             foreach($res as $k => $list){
                 $areas[$list['id']]=$list['province_name'].'-'.$list['city_name'].'-'.$list['area_name'];

@@ -93,8 +93,8 @@ class GradeController extends Controller
 //        print_r($arr);
         parse_str($arr,$output);//解析字符串成数组形式
 //        print_r($output);
-        $page =  $output['page'];
-        $per = $output['per-page'];
+//        $page =  $output['page'];
+//        $per = $output['per-page'];
 //        echo $page." ".$per;
         $model = $this->findModel($id);
         $schools = School::getAllSchool();

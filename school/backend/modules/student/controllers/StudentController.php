@@ -2,18 +2,24 @@
 
 namespace backend\modules\student\controllers;
 
+use backend\modules\grade\models\Grade;
+use backend\modules\school\models\School;
 use Yii;
 use backend\modules\student\models\Student;
 use backend\modules\student\models\StudentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Exception;
 
 /**
  * StudentController implements the CRUD actions for Student model.
  */
 class StudentController extends Controller
 {
+    //定义事件
+    const EVENT_AFTER_CREATE = 'eventAfterCreate';//创建之后的事件
+    const EVENT_AFTER_DELETE = 'eventAfterDelete';//删除之后的事件
     /**
      * @inheritdoc
      */
@@ -61,15 +67,39 @@ class StudentController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($user_id,$status)
     {
         $model = new Student();
+        $model->setAttribute('user_id', $user_id);
+        $schools = School::getAllSchool();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
+        $grades = Grade::getAllGrades();
+
+        if($model->load(Yii::$app->request->post())) {
+            //根据学校id和年级找到课程id  插入student表中的courseID
+//            $course = Course::find()->where(['school_id' => $model->school_id, 'grade' => $model->grade])->asArray()->one();
+//            if ($course) {
+//                $model->setAttribute('course_id', $course['id']);//如果有课程id 即跟随数据一起插入存储
+//            }
+
+            if($model->validate() && $model->save()){
+                $data = $model->getAttributes();
+                $data['status'] = $status;
+                $this->eventAfterCreate($data);
+                return $this->redirect(['users/view','id'=>$model->user_id]);
+            }else{
+                Yii::$app->getSession()->setFlash('error','学生角色创建失败');
+                return $this->render('create',[
+                    'model'=>$model,
+                    'schools'=>$schools,
+                    'grades'=>$grades,
+                ]);
+            }
+        }else{
+            return $this->render('create',[
+                'model'=>$model,
+                'schools'=>$schools,
+                'grades'=>$grades,
             ]);
         }
     }
@@ -119,6 +149,44 @@ class StudentController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    /**
+     * @param $data
+     * 创建学生身份后的事件集
+     */
+    public function eventAfterCreate($data){
+        $this->on(self::EVENT_AFTER_CREATE,[$this,'eventBindStatus'],$data);
+        $this->trigger(self::EVENT_AFTER_CREATE);
+    }
+
+    public function eventBindStatus($event){
+        $status = new Status();
+        $status->user_id = $event->data['user_id'];
+        $status->status = $event->data['status'];
+        $status->name = $event->data['student_name'];
+        $status->school = $event->data['school_name'];
+
+        if(!$status->save()){
+            throw new Exception('保存用户身份关联关系失败');
+        }
+        return $status->id;
+    }
+
+    /**
+     * @param $data
+     * 删除学生身份后的事件集
+     */
+    public function eventAfterDelete($data){
+        $this->on(self::EVENT_AFTER_DELETE,[$this,'eventUnBindStatus'],$data);
+        $this->trigger(self::EVENT_AFTER_DELETE);
+    }
+
+    public function eventUnBindStatus($event){
+        $res = Status::find()->where(['user_id'=>$event->data['user_id'],'name'=>$event->data['student_name']])->one();
+        if($res != null && !$res->delete()){
+            echo '删除用户身份关联关系失败';
         }
     }
 }

@@ -41,7 +41,7 @@ class GradeSearch extends Grade
      */
     public function search($params)
     {
-        $query = Grade::find()->orderBy('school_name');
+        $query = Grade::find()->orderBy('grade');
 
         // add conditions that should always apply here
 

@@ -168,4 +168,8 @@ return [
     //学校
     'School' => '学校',
 
+    //学生
+    'Student Manage' => '学生管理',
+    'Student List' => '学生列表',
+    'Create Student' => '创建学生',
 ];

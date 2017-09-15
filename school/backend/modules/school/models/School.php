@@ -34,7 +34,7 @@ class School extends \common\models\School
             [['area_id'], 'integer'],
             [['school_name', 'address', 'district'], 'string', 'max' => 255],
             //组合唯一规则
-            [['school_name','district'],'unique','targetAttribute'=>['school_name','district'],'message'=>'该学校已经存在']
+            [['school_name'],'unique','targetAttribute'=>['school_name','district'],'message'=>'该学校已经存在']
         ];
     }
 
@@ -78,5 +78,11 @@ class School extends \common\models\School
         }else{
             return null;
         }
+    }
+
+    public function queryAll($sql){
+        $conn = Yii::$app->db;
+        $command = $conn->createCommand($sql);
+        return $command->queryAll();
     }
 }

@@ -7,36 +7,31 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\modules\student\models\StudentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Students';
+$this->title = '所有学生';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="student-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Student', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+<?php Pjax::begin(); ?>
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'user_id',
+//            'id',
+//            'user_id',
             'student_no',
-            'school_id',
+//            'school_id',
+            'student_name',
             'school_name',
-            // 'student_name',
             // 'sex',
             // 'grade',
             // 'class_name',
-            // 'class_position',
             // 'accommodate',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
+        'layout'=>"{items}\n{pager}",
     ]); ?>
 <?php Pjax::end(); ?></div>

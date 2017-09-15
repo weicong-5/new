@@ -42,7 +42,6 @@ class UserSearch extends User
     public function search($params)
     {
         $query = User::find()->where(['is_manager'=>'0']);//选择身份不是管理员的
-
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([

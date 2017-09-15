@@ -33,8 +33,6 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'class_name') ?>
 
-    <?php // echo $form->field($model, 'class_position') ?>
-
     <?php // echo $form->field($model, 'accommodate') ?>
 
     <div class="form-group">

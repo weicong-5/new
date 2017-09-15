@@ -15,16 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="school-view">
     <div class="row">
         <div class="col-lg-6">
-            <p>
-                <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-                    'class' => 'btn btn-danger',
-                    'data' => [
-                        'confirm' => 'Are you sure you want to delete this item?',
-                        'method' => 'post',
-                    ],
-                ]) ?>
-            </p>
+            <h4>学校信息</h4>
 
             <?= DetailView::widget([
                 'model' => $model,
@@ -36,6 +27,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     'district',
                 ],
             ]) ?>
+            <p>
+                <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => 'Are you sure you want to delete this item?',
+                        'method' => 'post',
+                    ],
+                ]) ?>
+            </p>
         </div>
         <div class="col-lg-6">
             <h4>所有班级</h4>
@@ -44,10 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'dataProvider' => $dataProvider,
 //                'dataProvider' => $grades,
                 'columns' => [
-                    'id',
+//                    'id',
                     'grade',
                     'room'
-                ]
+                ],
+                'layout' => "{items}\n{pager}",//去掉summary
             ])?>
             <?php Pjax::end()?>
         </div>

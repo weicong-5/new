@@ -294,12 +294,13 @@ $baseUrl = str_replace('/backend/web', '/frontend/web', (new Request)->getBaseUr
                     ],
                     /*新增 学生管理*/
                     [
-                        'label' => '学生管理',
+                        'label' => Yii::t('backend','Student Manage'),
                         'url' => '#',
                         'icon' => '<i class="fa fa-edit"></i>',
                         'options' => ['class' => 'treeview'],
                         'items' =>[
-                            ['label'=>'学生列表', 'url'=>['/student/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+                            ['label'=>Yii::t('backend','Student List'), 'url'=>['/student/student/index'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
+//                            ['label'=>Yii::t('backend','Create Student'), 'url'=>['/student/student/create'], 'icon'=>'<i class="fa fa-angle-double-right"></i>'],
 //                            ['label'=>'课程列表', 'url'=>['/course/index'],'icon'=>'<i class="fa fa-angle-double-right"></i>'],
 //                            [
 //                                'label'=>Yii::t('backend', 'Users'),

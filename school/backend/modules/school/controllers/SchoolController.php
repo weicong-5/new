@@ -57,7 +57,7 @@ class SchoolController extends Controller
         $model = $this->findModel($id);
 //        $grades = $model->grades;//通过在School中定义的关联方法 getGrades()来获取这个学校所有的班级
 
-        $query = Grade::find()->where(['school_id'=>$id])->orderBy('room');
+        $query = Grade::find()->where(['school_id'=>$id])->orderBy('grade');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [

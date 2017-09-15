@@ -188,6 +188,17 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
+    //DAO
+    public static function queryAll($sql){
+        return Yii::$app->db->createCommand($sql)->queryAll();
+    }
 
+    public static function queryOne($sql){
+        return Yii::$app->db->createCommand($sql)->queryOne();
+    }
+
+    public static function queryColumn($sql){
+        return Yii::$app->db->createCommand($sql)->queryColumn();
+    }
 
 }

@@ -2,6 +2,7 @@
 
 namespace backend\modules\grade\models;
 
+use backend\modules\school\models\School;
 use Yii;
 use common\ykocomposer\components\validators\CheckClassRoomValidator;//引入验证班级格式类
 
@@ -35,7 +36,7 @@ class Grade extends \common\models\Grade
             [['grade', 'room', 'school_name'], 'string', 'max' => 255],
             ['room',CheckClassRoomValidator::className()],
             //组合唯一规则
-            [['school_name','grade','room'],'unique','targetAttribute'=>['school_name','grade','room'],'message'=>'该班级已经存在']
+            [['room'],'unique','targetAttribute'=>['school_name','grade','room'],'message'=>'该班级已经存在']
         ];
     }
 
@@ -81,5 +82,9 @@ class Grade extends \common\models\Grade
      */
     public static function getIndex($item){
         return array_search($item,self::getAllGrades());
+    }
+
+    public function getSchool(){
+        return $this->hasOne(School::className(),['id'=>'school_id']);
     }
 }
